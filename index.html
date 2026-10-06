@@ -3029,6 +3029,556 @@
   </div>
 </section>
 
+
+<!-- CALCULADORAS & NOTICIAS -->
+<section style="padding:5rem 4rem;border-bottom:1px solid var(--border);background:var(--dark);">
+
+  <!-- ── 1. CALCULADORA DCA ── -->
+  <div class="section-tag">// Calculadora DCA</div>
+  <h2>Dollar Cost<br/><em>Averaging</em></h2>
+  <p class="section-desc">Simula o impacto de investires um valor fixo mensalmente num activo ao longo do tempo.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem;" class="reveal">
+
+    <!-- Inputs -->
+    <div style="background:var(--card);border:1px solid var(--border);padding:2rem;border-radius:4px;">
+      <div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem">Parâmetros</div>
+
+      <div style="margin-bottom:1.2rem;">
+        <label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Investimento Mensal (€)</label>
+        <input id="dca-amount" type="number" value="100" min="1"
+          style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.9rem;outline:none;border-radius:3px;box-sizing:border-box;"
+          onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" oninput="calcDCA()"/>
+      </div>
+
+      <div style="margin-bottom:1.2rem;">
+        <label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Duração (anos)</label>
+        <input id="dca-years" type="number" value="5" min="1" max="30"
+          style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.9rem;outline:none;border-radius:3px;box-sizing:border-box;"
+          onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" oninput="calcDCA()"/>
+      </div>
+
+      <div style="margin-bottom:1.2rem;">
+        <label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Retorno Anual Esperado (%)</label>
+        <input id="dca-return" type="number" value="10" min="1" max="100"
+          style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.9rem;outline:none;border-radius:3px;box-sizing:border-box;"
+          onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" oninput="calcDCA()"/>
+      </div>
+
+      <div style="margin-bottom:1.2rem;">
+        <label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Activo</label>
+        <select id="dca-asset" onchange="calcDCA()"
+          style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.82rem;outline:none;border-radius:3px;box-sizing:border-box;">
+          <option value="BTC">Bitcoin (BTC)</option>
+          <option value="ETH">Ethereum (ETH)</option>
+          <option value="SP500" selected>S&P 500</option>
+          <option value="NASDAQ">Nasdaq 100</option>
+          <option value="GOLD">Ouro</option>
+          <option value="CUSTOM">Personalizado</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div style="background:var(--card);border:1px solid var(--border);padding:2rem;border-radius:4px;">
+      <div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem">Resultado</div>
+
+      <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem;">
+        <div style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid var(--gold);">
+          <div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Total Investido</div>
+          <div id="dca-invested" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--white)">—</div>
+        </div>
+        <div style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid #22c55e;">
+          <div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Valor Final Estimado</div>
+          <div id="dca-final" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#22c55e">—</div>
+        </div>
+        <div style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid #3B82F6;">
+          <div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Lucro Estimado</div>
+          <div id="dca-profit" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#3B82F6">—</div>
+        </div>
+        <div style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid #f97316;">
+          <div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Multiplicador</div>
+          <div id="dca-mult" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#f97316">—</div>
+        </div>
+      </div>
+      <div style="font-size:.62rem;color:var(--muted);line-height:1.7">⚠️ Simulação baseada em retorno anual constante. Resultados reais variam. Não constitui aconselhamento financeiro.</div>
+    </div>
+  </div>
+
+  <!-- ── 2. CALCULADORA JUROS COMPOSTOS ── -->
+  <div style="margin-top:5rem;">
+    <div class="section-tag">// Juros Compostos</div>
+    <h2>O Poder dos<br/><em>Juros Compostos</em></h2>
+    <p class="section-desc">Albert Einstein chamou-lhe "a oitava maravilha do mundo". Descobre quanto vale o teu capital ao longo do tempo.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem;" class="reveal">
+
+      <div style="background:var(--card);border:1px solid var(--border);padding:2rem;border-radius:4px;">
+        <div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem">Parâmetros</div>
+
+        <div style="margin-bottom:1.2rem;">
+          <label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Capital Inicial (€)</label>
+          <input id="ci-capital" type="number" value="1000" min="0"
+            style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.9rem;outline:none;border-radius:3px;box-sizing:border-box;"
+            onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" oninput="calcCI()"/>
+        </div>
+
+        <div style="margin-bottom:1.2rem;">
+          <label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Taxa Anual (%)</label>
+          <input id="ci-rate" type="number" value="8" min="0" max="100" step="0.1"
+            style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.9rem;outline:none;border-radius:3px;box-sizing:border-box;"
+            onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" oninput="calcCI()"/>
+        </div>
+
+        <div style="margin-bottom:1.2rem;">
+          <label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Período (anos)</label>
+          <input id="ci-years" type="number" value="10" min="1" max="50"
+            style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.9rem;outline:none;border-radius:3px;box-sizing:border-box;"
+            onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" oninput="calcCI()"/>
+        </div>
+
+        <div style="margin-bottom:1.2rem;">
+          <label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Contribuição Mensal (€)</label>
+          <input id="ci-monthly" type="number" value="0" min="0"
+            style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.9rem;outline:none;border-radius:3px;box-sizing:border-box;"
+            onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" oninput="calcCI()"/>
+        </div>
+
+        <div style="margin-bottom:0;">
+          <label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Capitalização</label>
+          <select id="ci-freq" onchange="calcCI()"
+            style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.82rem;outline:none;border-radius:3px;box-sizing:border-box;">
+            <option value="12" selected>Mensal</option>
+            <option value="4">Trimestral</option>
+            <option value="2">Semestral</option>
+            <option value="1">Anual</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);padding:2rem;border-radius:4px;">
+        <div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem">Resultado</div>
+
+        <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem;">
+          <div style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid var(--gold);">
+            <div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Capital Final</div>
+            <div id="ci-final" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--white)">—</div>
+          </div>
+          <div style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid #22c55e;">
+            <div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Total Juros Gerados</div>
+            <div id="ci-interest" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#22c55e">—</div>
+          </div>
+          <div style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid #3B82F6;">
+            <div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Total Investido</div>
+            <div id="ci-total-invested" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#3B82F6">—</div>
+          </div>
+          <div style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid #f97316;">
+            <div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">% de Crescimento</div>
+            <div id="ci-growth" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#f97316">—</div>
+          </div>
+        </div>
+        <div style="font-size:.62rem;color:var(--muted);line-height:1.7">⚠️ Simulação com taxa constante. Não inclui impostos nem inflação.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 3. FEED DE NOTICIAS ── -->
+  <div style="margin-top:5rem;">
+    <div class="section-tag">// Notícias & Mercados</div>
+    <h2>Últimas<br/><em>Notícias</em></h2>
+    <p class="section-desc">Mantém-te actualizado com as últimas notícias de cripto, mercados e finanças.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:3rem;" class="reveal">
+      <a href="https://cointelegraph.com" target="_blank" style="background:var(--dark);padding:1.5rem;text-decoration:none;transition:background .25s;border-top:2px solid #F7931A;" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
+        <div style="font-size:1.3rem;margin-bottom:.8rem">₿</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">CoinTelegraph</div>
+        <div style="font-size:.65rem;color:#F7931A;margin-bottom:.7rem">Notícias Cripto · EN</div>
+        <div style="font-size:.68rem;color:var(--muted)">O maior portal de notícias cripto do mundo. Análises, mercados e novidades blockchain em tempo real.</div>
+        <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold)">cointelegraph.com →</div>
+      </a>
+      <a href="https://coindesk.com" target="_blank" style="background:var(--dark);padding:1.5rem;text-decoration:none;transition:background .25s;border-top:2px solid #627EEA;" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
+        <div style="font-size:1.3rem;margin-bottom:.8rem">📰</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">CoinDesk</div>
+        <div style="font-size:.65rem;color:#627EEA;margin-bottom:.7rem">Notícias Cripto · EN</div>
+        <div style="font-size:.68rem;color:var(--muted)">Jornalismo financeiro de referência no mundo cripto. Cobertura de regulação, institucionais e mercados.</div>
+        <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold)">coindesk.com →</div>
+      </a>
+      <a href="https://decrypt.co" target="_blank" style="background:var(--dark);padding:1.5rem;text-decoration:none;transition:background .25s;border-top:2px solid #9945FF;" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
+        <div style="font-size:1.3rem;margin-bottom:.8rem">🔓</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">Decrypt</div>
+        <div style="font-size:.65rem;color:#9945FF;margin-bottom:.7rem">Notícias Cripto & Web3 · EN</div>
+        <div style="font-size:.68rem;color:var(--muted)">Notícias de cripto, NFT, DeFi e Web3. Linguagem acessível e análises de qualidade.</div>
+        <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold)">decrypt.co →</div>
+      </a>
+      <a href="https://www.reuters.com/finance" target="_blank" style="background:var(--dark);padding:1.5rem;text-decoration:none;transition:background .25s;border-top:2px solid #f97316;" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
+        <div style="font-size:1.3rem;margin-bottom:.8rem">🌍</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">Reuters Finance</div>
+        <div style="font-size:.65rem;color:#f97316;margin-bottom:.7rem">Mercados Globais · EN</div>
+        <div style="font-size:.68rem;color:var(--muted)">A agência de notícias mais credível do mundo. Cobertura de mercados, macroeconomia e finanças globais.</div>
+        <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold)">reuters.com →</div>
+      </a>
+      <a href="https://www.infomoney.com.br" target="_blank" style="background:var(--dark);padding:1.5rem;text-decoration:none;transition:background .25s;border-top:2px solid #22c55e;" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
+        <div style="font-size:1.3rem;margin-bottom:.8rem">📊</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">InfoMoney</div>
+        <div style="font-size:.65rem;color:#22c55e;margin-bottom:.7rem">Finanças · PT</div>
+        <div style="font-size:.68rem;color:var(--muted)">Portal de finanças em português com notícias de bolsa, investimentos e economia para o investidor lusófono.</div>
+        <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold)">infomoney.com.br →</div>
+      </a>
+      <a href="https://thedefiant.io" target="_blank" style="background:var(--dark);padding:1.5rem;text-decoration:none;transition:background .25s;border-top:2px solid #06b6d4;" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
+        <div style="font-size:1.3rem;margin-bottom:.8rem">⚡</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">The Defiant</div>
+        <div style="font-size:.65rem;color:#06b6d4;margin-bottom:.7rem">DeFi & Web3 · EN</div>
+        <div style="font-size:.68rem;color:var(--muted)">O melhor portal especializado em DeFi e Web3. Análises profundas de protocolos, yields e tendências.</div>
+        <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold)">thedefiant.io →</div>
+      </a>
+    </div>
+  </div>
+
+</section>
+
+<script>
+  // ── DCA CALCULATOR ──
+  function calcDCA() {
+    const amount = parseFloat(document.getElementById('dca-amount').value) || 0;
+    const years = parseFloat(document.getElementById('dca-years').value) || 0;
+    const annualReturn = parseFloat(document.getElementById('dca-return').value) / 100 || 0;
+    const months = years * 12;
+    const monthlyRate = annualReturn / 12;
+    const invested = amount * months;
+    let finalValue = 0;
+    if (monthlyRate > 0) {
+      finalValue = amount * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate) * (1 + monthlyRate);
+    } else {
+      finalValue = invested;
+    }
+    const profit = finalValue - invested;
+    const mult = finalValue / invested;
+    const fmt = (n) => '€' + n.toLocaleString('pt-PT', {minimumFractionDigits:2, maximumFractionDigits:2});
+    document.getElementById('dca-invested').textContent = fmt(invested);
+    document.getElementById('dca-final').textContent = fmt(finalValue);
+    document.getElementById('dca-profit').textContent = fmt(profit);
+    document.getElementById('dca-mult').textContent = 'x' + mult.toFixed(2);
+  }
+
+  // ── JUROS COMPOSTOS ──
+  function calcCI() {
+    const capital = parseFloat(document.getElementById('ci-capital').value) || 0;
+    const rate = parseFloat(document.getElementById('ci-rate').value) / 100 || 0;
+    const years = parseFloat(document.getElementById('ci-years').value) || 0;
+    const monthly = parseFloat(document.getElementById('ci-monthly').value) || 0;
+    const freq = parseInt(document.getElementById('ci-freq').value) || 12;
+    const r = rate / freq;
+    const n = freq * years;
+    // Capital inicial com juros compostos
+    const capitalFinal = capital * Math.pow(1 + r, n);
+    // Contribuições mensais com juros compostos
+    const monthlyFreq = 12;
+    const rMonthly = rate / monthlyFreq;
+    const nMonthly = monthlyFreq * years;
+    const monthlyFinal = monthly > 0 ? monthly * ((Math.pow(1 + rMonthly, nMonthly) - 1) / rMonthly) * (1 + rMonthly) : 0;
+    const totalFinal = capitalFinal + monthlyFinal;
+    const totalInvested = capital + (monthly * 12 * years);
+    const totalInterest = totalFinal - totalInvested;
+    const growth = ((totalFinal - totalInvested) / totalInvested) * 100;
+    const fmt = (n) => '€' + n.toLocaleString('pt-PT', {minimumFractionDigits:2, maximumFractionDigits:2});
+    document.getElementById('ci-final').textContent = fmt(totalFinal);
+    document.getElementById('ci-interest').textContent = fmt(totalInterest);
+    document.getElementById('ci-total-invested').textContent = fmt(totalInvested);
+    document.getElementById('ci-growth').textContent = growth.toFixed(1) + '%';
+  }
+
+  // Init calculators
+  calcDCA();
+  calcCI();
+</script>
+
+
+
+<!-- INDICES MUNDIAIS + CALCULADORA IMPOSTOS + SIMULADOR PORTFOLIO -->
+<section style="padding:5rem 4rem;border-bottom:1px solid var(--border);">
+
+  <!-- ── 5. ÍNDICES MUNDIAIS ── -->
+  <div class="section-tag">// Índices Mundiais</div>
+  <h2>Mercados<br/><em>Globais</em></h2>
+  <p class="section-desc">Acompanha os principais índices mundiais em tempo real.</p>
+
+  <div id="indices-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-top:3rem;" class="reveal">
+    <!-- SP500 -->
+    <div style="background:var(--dark);padding:1.4rem;border-top:2px solid #22c55e;">
+      <div style="font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#22c55e;margin-bottom:.4rem">S&P 500</div>
+      <div id="sp500-price" style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--white)">—</div>
+      <div id="sp500-change" style="font-size:.68rem;margin-top:.2rem">—</div>
+    </div>
+    <!-- NASDAQ -->
+    <div style="background:var(--dark);padding:1.4rem;border-top:2px solid #3B82F6;">
+      <div style="font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#3B82F6;margin-bottom:.4rem">Nasdaq 100</div>
+      <div id="nasdaq-price" style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--white)">—</div>
+      <div id="nasdaq-change" style="font-size:.68rem;margin-top:.2rem">—</div>
+    </div>
+    <!-- DOW JONES -->
+    <div style="background:var(--dark);padding:1.4rem;border-top:2px solid #f97316;">
+      <div style="font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#f97316;margin-bottom:.4rem">Dow Jones</div>
+      <div id="dji-price" style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--white)">—</div>
+      <div id="dji-change" style="font-size:.68rem;margin-top:.2rem">—</div>
+    </div>
+    <!-- DAX -->
+    <div style="background:var(--dark);padding:1.4rem;border-top:2px solid #FFD700;">
+      <div style="font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#FFD700;margin-bottom:.4rem">DAX 40</div>
+      <div id="dax-price" style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--white)">—</div>
+      <div id="dax-change" style="font-size:.68rem;margin-top:.2rem">—</div>
+    </div>
+    <!-- FTSE -->
+    <div style="background:var(--dark);padding:1.4rem;border-top:2px solid #e11d48;">
+      <div style="font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#e11d48;margin-bottom:.4rem">FTSE 100</div>
+      <div id="ftse-price" style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--white)">—</div>
+      <div id="ftse-change" style="font-size:.68rem;margin-top:.2rem">—</div>
+    </div>
+    <!-- CAC -->
+    <div style="background:var(--dark);padding:1.4rem;border-top:2px solid #002395;">
+      <div style="font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#6B9FFF;margin-bottom:.4rem">CAC 40</div>
+      <div id="cac-price" style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--white)">—</div>
+      <div id="cac-change" style="font-size:.68rem;margin-top:.2rem">—</div>
+    </div>
+    <!-- NIKKEI -->
+    <div style="background:var(--dark);padding:1.4rem;border-top:2px solid #bc002d;">
+      <div style="font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#bc002d;margin-bottom:.4rem">Nikkei 225</div>
+      <div id="nikkei-price" style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--white)">—</div>
+      <div id="nikkei-change" style="font-size:.68rem;margin-top:.2rem">—</div>
+    </div>
+    <!-- SHANGHAI -->
+    <div style="background:var(--dark);padding:1.4rem;border-top:2px solid #ee1c25;">
+      <div style="font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#ee1c25;margin-bottom:.4rem">Shanghai</div>
+      <div id="sse-price" style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--white)">—</div>
+      <div id="sse-change" style="font-size:.68rem;margin-top:.2rem">—</div>
+    </div>
+  </div>
+  <div style="font-size:.6rem;color:var(--muted);margin-top:.5rem;text-align:right">Dados: Yahoo Finance · Actualização automática</div>
+
+  <!-- ── 6. CALCULADORA IMPOSTOS PT ── -->
+  <div style="margin-top:5rem;">
+    <div class="section-tag">// Impostos Portugal</div>
+    <h2>Calculadora de<br/><em>Mais-Valias</em></h2>
+    <p class="section-desc">Calcula o imposto a pagar sobre ganhos de investimentos em Portugal. IRS 2024/2025.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem;" class="reveal">
+      <div style="background:var(--card);border:1px solid var(--border);padding:2rem;border-radius:4px;">
+        <div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem">Parâmetros</div>
+
+        <div style="margin-bottom:1.2rem;">
+          <label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Tipo de Activo</label>
+          <select id="tax-type" onchange="calcTax()"
+            style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.82rem;outline:none;border-radius:3px;box-sizing:border-box;">
+            <option value="acoes">Acções / ETF (28%)</option>
+            <option value="crypto">Criptomoedas (28%)</option>
+            <option value="crypto_long">Cripto +365 dias (0% isento)</option>
+            <option value="obrigacoes">Obrigações (28%)</option>
+          </select>
+        </div>
+
+        <div style="margin-bottom:1.2rem;">
+          <label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Valor de Compra (€)</label>
+          <input id="tax-buy" type="number" value="1000" min="0"
+            style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.9rem;outline:none;border-radius:3px;box-sizing:border-box;"
+            onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" oninput="calcTax()"/>
+        </div>
+
+        <div style="margin-bottom:1.2rem;">
+          <label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Valor de Venda (€)</label>
+          <input id="tax-sell" type="number" value="2000" min="0"
+            style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.9rem;outline:none;border-radius:3px;box-sizing:border-box;"
+            onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" oninput="calcTax()"/>
+        </div>
+
+        <div style="margin-bottom:0;">
+          <label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Comissões / Custos (€)</label>
+          <input id="tax-fees" type="number" value="0" min="0"
+            style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.9rem;outline:none;border-radius:3px;box-sizing:border-box;"
+            onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" oninput="calcTax()"/>
+        </div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);padding:2rem;border-radius:4px;">
+        <div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem">Resultado</div>
+        <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem;">
+          <div style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid #22c55e;">
+            <div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Mais-Valia Bruta</div>
+            <div id="tax-gain" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#22c55e">—</div>
+          </div>
+          <div style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid #f87171;">
+            <div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Imposto a Pagar</div>
+            <div id="tax-amount" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#f87171">—</div>
+          </div>
+          <div style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid var(--gold);">
+            <div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Lucro Líquido</div>
+            <div id="tax-net" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--gold)">—</div>
+          </div>
+          <div style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid #3B82F6;">
+            <div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Taxa Efectiva</div>
+            <div id="tax-rate-eff" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#3B82F6">—</div>
+          </div>
+        </div>
+        <div style="font-size:.62rem;color:var(--muted);line-height:1.7">⚠️ Baseado nas regras do IRS português 2024/2025. Consulta um contabilista para casos específicos.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 7. SIMULADOR DE PORTFÓLIO ── -->
+  <div style="margin-top:5rem;">
+    <div class="section-tag">// Simulador de Portefólio</div>
+    <h2>Distribui o teu<br/><em>Portefólio</em></h2>
+    <p class="section-desc">Define a percentagem de cada activo e visualiza a distribuição do teu portefólio.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem;" class="reveal">
+      <div style="background:var(--card);border:1px solid var(--border);padding:2rem;border-radius:4px;">
+        <div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem">Capital Total (€)</div>
+        <input id="port-capital" type="number" value="10000" min="0"
+          style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.9rem;outline:none;border-radius:3px;box-sizing:border-box;margin-bottom:1.5rem;"
+          onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" oninput="calcPort()"/>
+
+        <div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">Alocação (%)</div>
+        <div id="port-sliders" style="display:flex;flex-direction:column;gap:.8rem;">
+          <div data-name="Bitcoin" data-color="#F7931A"><div style="display:flex;justify-content:space-between;margin-bottom:.3rem"><span style="font-size:.7rem;color:#F7931A">₿ Bitcoin</span><span class="port-pct" style="font-size:.7rem;color:var(--white);font-weight:700">30%</span></div><input type="range" min="0" max="100" value="30" oninput="updatePort(this)" style="width:100%;accent-color:#F7931A;cursor:pointer;"/></div>
+          <div data-name="Ethereum" data-color="#627EEA"><div style="display:flex;justify-content:space-between;margin-bottom:.3rem"><span style="font-size:.7rem;color:#627EEA">Ξ Ethereum</span><span class="port-pct" style="font-size:.7rem;color:var(--white);font-weight:700">20%</span></div><input type="range" min="0" max="100" value="20" oninput="updatePort(this)" style="width:100%;accent-color:#627EEA;cursor:pointer;"/></div>
+          <div data-name="S&P 500" data-color="#22c55e"><div style="display:flex;justify-content:space-between;margin-bottom:.3rem"><span style="font-size:.7rem;color:#22c55e">📈 S&P 500</span><span class="port-pct" style="font-size:.7rem;color:var(--white);font-weight:700">25%</span></div><input type="range" min="0" max="100" value="25" oninput="updatePort(this)" style="width:100%;accent-color:#22c55e;cursor:pointer;"/></div>
+          <div data-name="Ouro" data-color="#FFD700"><div style="display:flex;justify-content:space-between;margin-bottom:.3rem"><span style="font-size:.7rem;color:#FFD700">🥇 Ouro</span><span class="port-pct" style="font-size:.7rem;color:var(--white);font-weight:700">15%</span></div><input type="range" min="0" max="100" value="15" oninput="updatePort(this)" style="width:100%;accent-color:#FFD700;cursor:pointer;"/></div>
+          <div data-name="DeFi" data-color="#9945FF"><div style="display:flex;justify-content:space-between;margin-bottom:.3rem"><span style="font-size:.7rem;color:#9945FF">⛓️ DeFi</span><span class="port-pct" style="font-size:.7rem;color:var(--white);font-weight:700">10%</span></div><input type="range" min="0" max="100" value="10" oninput="updatePort(this)" style="width:100%;accent-color:#9945FF;cursor:pointer;"/></div>
+        </div>
+        <div id="port-total-pct" style="margin-top:1rem;font-size:.72rem;padding:.5rem .8rem;background:var(--dark);border-radius:3px;text-align:center;">Total: <strong style="color:var(--gold)">100%</strong></div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);padding:2rem;border-radius:4px;">
+        <div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem">Distribuição do Portefólio</div>
+        <div id="port-bars" style="display:flex;flex-direction:column;gap:.8rem;margin-bottom:1.5rem;"></div>
+        <div style="background:var(--dark);border-radius:4px;overflow:hidden;height:20px;display:flex;margin-bottom:1.5rem;" id="port-visual"></div>
+        <div id="port-total-val" style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid var(--gold);">
+          <div style="font-size:.6rem;color:var(--muted);margin-bottom:.3rem;text-transform:uppercase;letter-spacing:.08em">Capital Total Alocado</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--white)">€10,000.00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<script>
+  // ── ÍNDICES MUNDIAIS ──
+  async function fetchIndices() {
+    const indices = [
+      {ticker:'^GSPC', price:'sp500-price', change:'sp500-change'},
+      {ticker:'^NDX', price:'nasdaq-price', change:'nasdaq-change'},
+      {ticker:'^DJI', price:'dji-price', change:'dji-change'},
+      {ticker:'^GDAXI', price:'dax-price', change:'dax-change'},
+      {ticker:'^FTSE', price:'ftse-price', change:'ftse-change'},
+      {ticker:'^FCHI', price:'cac-price', change:'cac-change'},
+      {ticker:'^N225', price:'nikkei-price', change:'nikkei-change'},
+      {ticker:'000001.SS', price:'sse-price', change:'sse-change'},
+    ];
+    for (const idx of indices) {
+      try {
+        const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(idx.ticker)}?interval=1d&range=2d`;
+        const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+        const res = await fetch(proxy);
+        const json = await res.json();
+        const meta = JSON.parse(json.contents).chart.result[0].meta;
+        const price = meta.regularMarketPrice;
+        const prev = meta.chartPreviousClose;
+        const chg = ((price - prev) / prev) * 100;
+        const fmtP = (n) => n >= 10000 ? n.toLocaleString('en-US', {maximumFractionDigits:0}) : n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+        const chgHtml = chg >= 0 ? `<span style="color:#4ADE80">▲ +${chg.toFixed(2)}%</span>` : `<span style="color:#F87171">▼ ${chg.toFixed(2)}%</span>`;
+        const p = document.getElementById(idx.price); if(p) p.textContent = fmtP(price);
+        const c = document.getElementById(idx.change); if(c) c.innerHTML = chgHtml;
+      } catch(e) {}
+    }
+  }
+
+  // ── IMPOSTOS PT ──
+  function calcTax() {
+    const type = document.getElementById('tax-type').value;
+    const buy = parseFloat(document.getElementById('tax-buy').value) || 0;
+    const sell = parseFloat(document.getElementById('tax-sell').value) || 0;
+    const fees = parseFloat(document.getElementById('tax-fees').value) || 0;
+    const gain = sell - buy - fees;
+    let taxRate = 0;
+    if (type === 'crypto_long') {
+      taxRate = 0;
+    } else {
+      taxRate = 0.28;
+    }
+    const tax = gain > 0 ? gain * taxRate : 0;
+    const net = gain - tax;
+    const effRate = gain > 0 ? (tax / gain) * 100 : 0;
+    const fmt = (n) => (n >= 0 ? '€' : '-€') + Math.abs(n).toLocaleString('pt-PT', {minimumFractionDigits:2, maximumFractionDigits:2});
+    document.getElementById('tax-gain').textContent = fmt(gain);
+    document.getElementById('tax-gain').style.color = gain >= 0 ? '#22c55e' : '#f87171';
+    document.getElementById('tax-amount').textContent = fmt(tax);
+    document.getElementById('tax-net').textContent = fmt(net);
+    document.getElementById('tax-net').style.color = net >= 0 ? 'var(--gold)' : '#f87171';
+    document.getElementById('tax-rate-eff').textContent = effRate.toFixed(1) + '%';
+  }
+
+  // ── SIMULADOR PORTFÓLIO ──
+  function updatePort(slider) {
+    const parent = slider.parentElement;
+    const pct = parent.querySelector('.port-pct');
+    if (pct) pct.textContent = slider.value + '%';
+    calcPort();
+  }
+
+  function calcPort() {
+    const capital = parseFloat(document.getElementById('port-capital').value) || 0;
+    const sliders = document.querySelectorAll('#port-sliders input[type=range]');
+    const containers = document.querySelectorAll('#port-sliders > div');
+    let total = 0;
+    const items = [];
+    sliders.forEach((s, i) => {
+      const pct = parseFloat(s.value);
+      total += pct;
+      const container = containers[i];
+      items.push({
+        name: container.dataset.name,
+        color: container.dataset.color,
+        pct: pct,
+        value: (pct / 100) * capital
+      });
+    });
+
+    // Update total %
+    const totalEl = document.getElementById('port-total-pct');
+    totalEl.innerHTML = `Total: <strong style="color:${total === 100 ? 'var(--gold)' : total > 100 ? '#f87171' : '#f59e0b'}">${total}%</strong>${total > 100 ? ' ⚠️ Excede 100%' : total < 100 ? ` (${100-total}% por alocar)` : ' ✅'}`;
+
+    // Update bars
+    const barsEl = document.getElementById('port-bars');
+    barsEl.innerHTML = items.map(item => `
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:.25rem;">
+          <span style="font-size:.7rem;color:${item.color}">${item.name}</span>
+          <span style="font-size:.7rem;color:var(--white)">€${item.value.toLocaleString('pt-PT',{minimumFractionDigits:2,maximumFractionDigits:2})} <span style="color:var(--muted)">(${item.pct}%)</span></span>
+        </div>
+        <div style="background:var(--dark);border-radius:2px;height:6px;overflow:hidden;">
+          <div style="background:${item.color};height:100%;width:${item.pct}%;transition:width .3s;"></div>
+        </div>
+      </div>
+    `).join('');
+
+    // Update visual bar
+    const visualEl = document.getElementById('port-visual');
+    visualEl.innerHTML = items.filter(i => i.pct > 0).map(item =>
+      `<div style="background:${item.color};width:${item.pct}%;transition:width .3s;" title="${item.name}: ${item.pct}%"></div>`
+    ).join('');
+
+    // Update total
+    document.getElementById('port-total-val').querySelector('div:last-child').textContent =
+      '€' + capital.toLocaleString('pt-PT', {minimumFractionDigits:2, maximumFractionDigits:2});
+  }
+
+  // Init
+  calcTax();
+  calcPort();
+  fetchIndices();
+  setInterval(fetchIndices, 60000);
+</script>
+
+
 <!-- CTA -->
 <section id="cta">
   <div class="section-tag" style="position:relative">// Começar</div>

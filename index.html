@@ -3042,6 +3042,26 @@
 
 <script>
   // ── ÍNDICES MUNDIAIS ──
+  // ── PROXY HELPER ──
+  async function fetchYahoo(ticker) {
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=2d`;
+    const proxies = [
+      `https://corsproxy.io/?${encodeURIComponent(url)}`,
+      `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+      `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
+    ];
+    for (const proxy of proxies) {
+      try {
+        const res = await fetch(proxy, {signal: AbortSignal.timeout(5000)});
+        const json = await res.json();
+        const raw = json.contents || json;
+        const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
+        return parsed.chart.result[0].meta;
+      } catch(e) { continue; }
+    }
+    return null;
+  }
+
   async function fetchIndices() {
     const indices = [
       {ticker:'^GSPC', price:'sp500-price', change:'sp500-change'},
@@ -3054,16 +3074,13 @@
       {ticker:'000001.SS', price:'sse-price', change:'sse-change'},
     ];
     for (const idx of indices) {
+      const meta = await fetchYahoo(idx.ticker);
+      if (!meta) continue;
       try {
-        const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(idx.ticker)}?interval=1d&range=2d`;
-        const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
-        const res = await fetch(proxy);
-        const json = await res.json();
-        const meta = JSON.parse(json.contents).chart.result[0].meta;
         const price = meta.regularMarketPrice;
         const prev = meta.chartPreviousClose;
         const chg = ((price - prev) / prev) * 100;
-        const fmtP = (n) => n >= 10000 ? n.toLocaleString('en-US', {maximumFractionDigits:0}) : n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+        const fmtP = (n) => n >= 10000 ? n.toLocaleString('en-US',{maximumFractionDigits:0}) : n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
         const chgHtml = chg >= 0 ? `<span style="color:#4ADE80">▲ +${chg.toFixed(2)}%</span>` : `<span style="color:#F87171">▼ ${chg.toFixed(2)}%</span>`;
         const p = document.getElementById(idx.price); if(p) p.textContent = fmtP(price);
         const c = document.getElementById(idx.change); if(c) c.innerHTML = chgHtml;

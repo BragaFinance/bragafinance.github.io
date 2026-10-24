@@ -861,7 +861,7 @@
   <!-- Ticker -->
   <div class="ticker-wrap">
     <div class="ticker-track">
-      <span class="ticker-item">BTC/USD <span class="up">▲ +3.2%</span></span>
+      <span class="ticker-item">BTC/USD <span id="hero-btc-price" class="up">▲ +3.2%</span></span>
       <span class="ticker-item">ETH/USD <span class="up">▲ +1.8%</span></span>
       <span class="ticker-item">S&P 500 <span class="up">▲ +0.6%</span></span>
       <span class="ticker-item">EUR/USD <span class="dn">▼ −0.3%</span></span>
@@ -871,7 +871,7 @@
       <span class="ticker-item">AAVE <span class="dn">▼ −1.2%</span></span>
       <span class="ticker-item">MSFT <span class="up">▲ +1.3%</span></span>
       <!-- duplicate for seamless loop -->
-      <span class="ticker-item">BTC/USD <span class="up">▲ +3.2%</span></span>
+      <span class="ticker-item">BTC/USD <span id="hero-btc-price" class="up">▲ +3.2%</span></span>
       <span class="ticker-item">ETH/USD <span class="up">▲ +1.8%</span></span>
       <span class="ticker-item">S&P 500 <span class="up">▲ +0.6%</span></span>
       <span class="ticker-item">EUR/USD <span class="dn">▼ −0.3%</span></span>
@@ -959,6 +959,12 @@
   <div class="section-tag">// 03 — Mercados ao Vivo</div>
   <h2>Dashboard de<br/><em>Preços em Tempo Real</em></h2>
   <p class="section-desc">Acompanha os principais activos cripto, DeFi e tradicionais em tempo real. Actualização automática a cada 60 segundos.</p>
+  
+  <!-- Market Status -->
+  <div id="market-status" style="display:inline-flex;align-items:center;gap:.5rem;background:var(--card);border:1px solid var(--border);padding:.35rem .9rem;border-radius:2px;font-size:.62rem;color:var(--muted);letter-spacing:.06em;">
+    <span id="market-dot" style="width:8px;height:8px;border-radius:50%;background:var(--muted);flex-shrink:0;"></span>
+    <span id="market-label">A verificar...</span>
+  </div>
     <!-- EUR/USD LIVE RATE -->
   <div style="display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--border);border-left:3px solid var(--gold);padding:.7rem 1.2rem;margin-bottom:2rem;flex-wrap:wrap;gap:.5rem;">
     <div style="font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Taxa de Câmbio em Tempo Real</div>
@@ -988,6 +994,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="btc-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="btc-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
+      <canvas id="btc-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #627EEA" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1000,6 +1007,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="eth-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="eth-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
+      <canvas id="eth-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #9945FF" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1012,6 +1020,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="sol-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="sol-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
+      <canvas id="sol-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #6FBCF0" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1024,6 +1033,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="sui-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="sui-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
+      <canvas id="sui-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #F3BA2F" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1036,6 +1046,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="bnb-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="bnb-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
+      <canvas id="bnb-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #2BCCF7" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1048,6 +1059,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="aave-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="aave-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
+      <canvas id="aave-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #375BD2" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1060,6 +1072,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="link-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="link-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
+      <canvas id="link-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #FF007A" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1072,6 +1085,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="uni-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="uni-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
+      <canvas id="uni-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #26A17B" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1084,6 +1098,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="usdt-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="usdt-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
+      <canvas id="usdt-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #FF6B00" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1096,6 +1111,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="xmr-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="xmr-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
+      <canvas id="xmr-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #00C2FF" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1108,6 +1124,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="hype-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="hype-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
+      <canvas id="hype-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #FFD700" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1120,6 +1137,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="gold-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="gold-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
+      <canvas id="gold-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #F4B728" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1132,6 +1150,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="zec-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="zec-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
+      <canvas id="zec-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #E6007A" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1144,6 +1163,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="dot-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="dot-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
+      <canvas id="dot-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #00AAE4" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1156,6 +1176,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="xrp-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="xrp-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
+      <canvas id="xrp-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
       </div>
     </div>
   </div>
@@ -3527,6 +3548,67 @@ renderGloss();
   fetchAllStocks();
   fetchEurUsd();
   fetchDominance();
+
+  // ── HERO TICKER BTC LIVE ──
+  async function updateHeroTicker() {
+    try {
+      const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
+      const d = await r.json();
+      if (d.bitcoin) {
+        const price = d.bitcoin.usd;
+        const chg = d.bitcoin.usd_24h_change;
+        const el = document.getElementById('hero-btc-price');
+        if (el) {
+          const fmtP = '$' + price.toLocaleString('en-US', {maximumFractionDigits:0});
+          el.textContent = (chg >= 0 ? '▲ +' : '▼ ') + Math.abs(chg).toFixed(2) + '% · ' + fmtP;
+          el.className = chg >= 0 ? 'up' : 'dn';
+        }
+      }
+    } catch(e) {}
+  }
+  updateHeroTicker();
+  setInterval(updateHeroTicker, 30000);
+
+  // ── MARKET STATUS (NYSE/NASDAQ) ──
+  function updateMarketStatus() {
+    const now = new Date();
+    const nyTime = new Date(now.toLocaleString('en-US', {timeZone:'America/New_York'}));
+    const day = nyTime.getDay();
+    const hour = nyTime.getHours();
+    const min = nyTime.getMinutes();
+    const time = hour * 60 + min;
+    const isWeekday = day >= 1 && day <= 5;
+    const isOpen = isWeekday && time >= 570 && time < 960; // 9:30 - 16:00
+    const isPreMarket = isWeekday && time >= 240 && time < 570; // 4:00 - 9:30
+    const isAfterHours = isWeekday && time >= 960 && time < 1200; // 16:00 - 20:00
+    const dot = document.getElementById('market-dot');
+    const label = document.getElementById('market-label');
+    if (!dot || !label) return;
+    if (isOpen) {
+      dot.style.background = '#22c55e';
+      dot.style.boxShadow = '0 0 6px #22c55e';
+      label.textContent = '🟢 NYSE · NASDAQ — Aberto';
+      label.style.color = '#22c55e';
+    } else if (isPreMarket) {
+      dot.style.background = '#f59e0b';
+      dot.style.boxShadow = '0 0 6px #f59e0b';
+      label.textContent = '🟡 Pré-Mercado';
+      label.style.color = '#f59e0b';
+    } else if (isAfterHours) {
+      dot.style.background = '#f59e0b';
+      dot.style.boxShadow = '0 0 6px #f59e0b';
+      label.textContent = '🟡 After-Hours';
+      label.style.color = '#f59e0b';
+    } else {
+      dot.style.background = '#F87171';
+      dot.style.boxShadow = 'none';
+      label.textContent = '🔴 NYSE · NASDAQ — Fechado';
+      label.style.color = '#F87171';
+    }
+  }
+  updateMarketStatus();
+  setInterval(updateMarketStatus, 60000);
+
   // Refresh every 60s
   setInterval(fetchCryptoPrices, 60000);
   setInterval(fetchAllStocks, 60000);
@@ -3756,6 +3838,100 @@ renderGloss();
       if (btn) btn.textContent = '☀️';
     });
   }
+</script>
+
+
+<!-- BACK TO TOP -->
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+  title="Voltar ao topo"
+  style="position:fixed;bottom:1.5rem;left:1.5rem;z-index:9997;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--card),var(--dark));border:1px solid var(--border);color:var(--muted);cursor:pointer;display:none;align-items:center;justify-content:center;font-size:1rem;transition:all .25s;box-shadow:0 4px 15px rgba(0,0,0,.3);"
+  onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)';this.style.transform='translateY(-2px)'"
+  onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)';this.style.transform='translateY(0)'">
+  ↑
+</button>
+<script>
+  // Show/hide back to top
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('back-to-top');
+    if (btn) {
+      if (window.scrollY > 400) {
+        btn.style.display = 'flex';
+        btn.style.opacity = '1';
+      } else {
+        btn.style.opacity = '0';
+        setTimeout(() => { if(window.scrollY <= 400) btn.style.display = 'none'; }, 300);
+      }
+    }
+  });
+</script>
+
+<script>
+// ── SPARKLINE CHARTS ──
+async function fetchSparklines() {
+  const coins = ['bitcoin','ethereum','solana','sui','binancecoin','aave','chainlink','uniswap','tether','monero','hyperliquid','zcash','polkadot','ripple'];
+  const ids = ['btc','eth','sol','sui','bnb','aave','link','uni','usdt','xmr','hype','zec','dot','xrp'];
+
+  try {
+    const res = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coins.join(',')}&sparkline=true&price_change_percentage=24h`);
+    const data = await res.json();
+
+    data.forEach(coin => {
+      const idx = coins.indexOf(coin.id);
+      if (idx === -1) return;
+      const id = ids[idx];
+      const canvas = document.getElementById(id + '-spark');
+      if (!canvas || !coin.sparkline_in_7d) return;
+
+      // Use last 24 points (24h from 7d data)
+      const prices = coin.sparkline_in_7d.price.slice(-24);
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      const min = Math.min(...prices);
+      const max = Math.max(...prices);
+      const range = max - min || 1;
+      const isUp = prices[prices.length-1] >= prices[0];
+      const color = isUp ? '#4ADE80' : '#F87171';
+
+      ctx.clearRect(0,0,w,h);
+
+      // Draw gradient fill
+      const gradient = ctx.createLinearGradient(0,0,0,h);
+      gradient.addColorStop(0, isUp ? 'rgba(74,222,128,.25)' : 'rgba(248,113,113,.25)');
+      gradient.addColorStop(1, 'rgba(0,0,0,0)');
+
+      ctx.beginPath();
+      prices.forEach((p,i) => {
+        const x = (i / (prices.length-1)) * w;
+        const y = h - ((p - min) / range) * (h * 0.85) - h * 0.07;
+        i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+      });
+      ctx.lineTo(w, h);
+      ctx.lineTo(0, h);
+      ctx.closePath();
+      ctx.fillStyle = gradient;
+      ctx.fill();
+
+      // Draw line
+      ctx.beginPath();
+      prices.forEach((p,i) => {
+        const x = (i / (prices.length-1)) * w;
+        const y = h - ((p - min) / range) * (h * 0.85) - h * 0.07;
+        i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+      });
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.5;
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
+      ctx.stroke();
+    });
+  } catch(e) { console.log('Sparkline error:', e); }
+}
+
+window.addEventListener('load', () => {
+  setTimeout(fetchSparklines, 2000);
+  setInterval(fetchSparklines, 300000); // refresh every 5 min
+});
 </script>
 
 </body>

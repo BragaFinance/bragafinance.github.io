@@ -706,8 +706,9 @@
       .strat-layout { grid-template-columns: 1fr; gap: 2rem; }
       .markets-grid { grid-template-columns: 1fr; }
 
-      /* Crypto grid — 2 cols tablet */
-      #crypto-grid { grid-template-columns: repeat(2,1fr) !important; }
+      /* Crypto grid — horizontal scroll on mobile */
+      #crypto-grid { display:flex !important; overflow-x:auto !important; scroll-snap-type:x mandatory !important; -webkit-overflow-scrolling:touch !important; gap:1px !important; padding-bottom:.5rem !important; }
+      #crypto-grid > div { min-width:200px !important; max-width:200px !important; flex-shrink:0 !important; scroll-snap-align:start !important; }
 
       /* Stocks + ETF — stack vertically */
       .watchlist-grid { grid-template-columns: 1fr !important; }
@@ -800,6 +801,20 @@
     [data-theme="light"] nav { background: rgba(245,245,240,.96) !important; }
     [data-theme="light"] #theme-toggle { background: transparent; }
 
+  
+    /* Hamburger */
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:.4rem; background:transparent; border:1px solid var(--border); border-radius:3px; }
+    .hamburger span { display:block; width:20px; height:2px; background:var(--muted); transition:all .3s; }
+    .hamburger:hover span { background:var(--gold); }
+    .mobile-menu { display:none; position:fixed; inset:0; top:60px; background:rgba(15,21,32,.98); backdrop-filter:blur(16px); z-index:899; padding:2rem; flex-direction:column; gap:1.5rem; overflow-y:auto; }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a { font-size:1rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); text-decoration:none; padding:.8rem 0; border-bottom:1px solid var(--border); transition:color .2s; }
+    .mobile-menu a:hover { color:var(--gold); }
+    @media (max-width: 900px) {
+      .hamburger { display:flex; }
+      nav > div:last-child .social-btn span { display:none; }
+    }
+
   </style>
   <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 </head>
@@ -832,6 +847,10 @@
     </a>
     
 
+    <!-- Hamburger -->
+    <button class="hamburger" onclick="toggleMobileMenu()" id="hamburger-btn" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
     <!-- Dark/Light Toggle -->
     <button id="theme-toggle" onclick="toggleTheme()" title="Alternar tema"
       style="background:transparent;border:1px solid var(--border);color:var(--muted);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0;"
@@ -839,6 +858,35 @@
       onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">🌙</button>
   </div>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#mercados" onclick="closeMobileMenu()">// 02 — Mercados</a>
+  <a href="#dashboard" onclick="closeMobileMenu()">// 03 — Dashboard</a>
+  <a href="#ferramentas" onclick="closeMobileMenu()">// 04 — Ferramentas</a>
+  <a href="#farming" onclick="closeMobileMenu()">// 05 — DeFi & Farming</a>
+  <a href="#tokenizados" onclick="closeMobileMenu()">// 06 — Tokenizados</a>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;padding-top:1rem;">
+    <a href="https://t.me/+dm0Hug3qgcAzODA0" target="_blank" style="border:1px solid var(--border)!important;padding:.5rem 1rem!important;border-radius:2px;">Telegram</a>
+    <a href="https://discord.gg/HsgbC7AES4" target="_blank" style="border:1px solid var(--border)!important;padding:.5rem 1rem!important;border-radius:2px;">Discord</a>
+    <a href="https://x.com/BragaFinance" target="_blank" style="border:1px solid var(--border)!important;padding:.5rem 1rem!important;border-radius:2px;">X</a>
+  </div>
+</div>
+<script>
+  function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    const btn = document.getElementById('hamburger-btn');
+    menu.classList.toggle('open');
+    const isOpen = menu.classList.contains('open');
+    btn.innerHTML = isOpen
+      ? '<span style="transform:rotate(45deg);transform-origin:center;margin-top:7px"></span><span style="opacity:0"></span><span style="transform:rotate(-45deg);transform-origin:center;margin-top:-7px"></span>'
+      : '<span></span><span></span><span></span>';
+  }
+  function closeMobileMenu() {
+    document.getElementById('mobile-menu').classList.remove('open');
+    document.getElementById('hamburger-btn').innerHTML = '<span></span><span></span><span></span>';
+  }
+</script>
 
 <!-- HERO -->
 <section id="hero">
@@ -3928,10 +3976,13 @@ async function fetchSparklines() {
   } catch(e) { console.log('Sparkline error:', e); }
 }
 
-window.addEventListener('load', () => {
-  setTimeout(fetchSparklines, 2000);
-  setInterval(fetchSparklines, 300000); // refresh every 5 min
-});
+// Init sparklines after page load
+if (document.readyState === 'complete') {
+  setTimeout(fetchSparklines, 1500);
+} else {
+  window.addEventListener('load', () => setTimeout(fetchSparklines, 1500));
+}
+setInterval(fetchSparklines, 300000);
 </script>
 
 </body>

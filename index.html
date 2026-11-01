@@ -694,7 +694,8 @@
       .nav-links { display: none; }
       .logo img { height: 52px !important; width: 52px !important; }
       .logo-text { font-size: 1.3rem !important; }
-      nav > div:last-child .social-btn svg + * { display: none; }
+      nav > div:last-child .social-btn { display: none !important; }
+      nav > div:last-child { gap: .5rem !important; }
       nav > div:last-child .social-btn { padding: .35rem .55rem; }
 
       section, #stats { padding: 3rem 1.2rem; }
@@ -753,7 +754,6 @@
       nav { padding: .4rem .8rem; }
       .logo img { height: 40px !important; width: 40px !important; }
       .logo-text { font-size: 1.1rem !important; }
-      .logo-text span { display: none; }
 
       section, #stats { padding: 2.5rem .8rem; }
       #hero { padding: 5rem .8rem 2.5rem; }
@@ -781,7 +781,6 @@
       .btn-primary, .btn-outline { text-align: center; }
 
       /* Ticker — hide on tiny screens */
-      .ticker-wrap { display: none; }
     }
   
     /* ── LIGHT MODE ── */
@@ -806,7 +805,7 @@
     .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:.4rem; background:transparent; border:1px solid var(--border); border-radius:3px; }
     .hamburger span { display:block; width:20px; height:2px; background:var(--muted); transition:all .3s; }
     .hamburger:hover span { background:var(--gold); }
-    .mobile-menu { display:none; position:fixed; inset:0; top:60px; background:rgba(15,21,32,.98); backdrop-filter:blur(16px); z-index:899; padding:2rem; flex-direction:column; gap:1.5rem; overflow-y:auto; }
+    .mobile-menu { display:none; position:fixed; inset:0; top:68px; background:rgba(15,21,32,.98); backdrop-filter:blur(16px); z-index:899; padding:2rem; flex-direction:column; gap:1.5rem; overflow-y:auto; }
     .mobile-menu.open { display:flex; }
     .mobile-menu a { font-size:1rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); text-decoration:none; padding:.8rem 0; border-bottom:1px solid var(--border); transition:color .2s; }
     .mobile-menu a:hover { color:var(--gold); }
@@ -815,6 +814,31 @@
       nav > div:last-child .social-btn span { display:none; }
     }
 
+  
+    /* ── MOBILE v29out-B: margens laterais e grelhas que não empilhavam ── */
+    @media (max-width: 900px) {
+      section { padding-left: 1.2rem !important; padding-right: 1.2rem !important; }
+      .calc-grid, .buffett-grid { grid-template-columns: 1fr !important; }
+      [style*="gap:2rem;margin-top:3rem"][style*="1fr 1fr"] { grid-template-columns: 1fr !important; }
+      .news-grid, [style*="repeat(3,1fr);gap:1px;background:var(--border);margin-top"] { grid-template-columns: repeat(2,1fr) !important; }
+      #gloss-grid { grid-template-columns: repeat(2,1fr) !important; }
+    }
+    @media (max-width: 480px) {
+      .news-grid, [style*="repeat(3,1fr);gap:1px;background:var(--border);margin-top"], #gloss-grid { grid-template-columns: 1fr !important; }
+    }
+  
+    /* ── MOBILE v29out-B (2): mining + tokenizados compactos ── */
+    @media (max-width: 900px) {
+      .mining-head { grid-template-columns: 1fr !important; }
+      .mining-head > a { justify-self: start; }
+      .mining-grid > div:last-child { min-height: 260px; }
+    }
+    @media (max-width: 480px) {
+      .tokens-grid { grid-template-columns: 1fr 1fr !important; }
+      .tokens-grid > a { padding: 1rem !important; }
+      .tokens-grid > a > div:nth-child(4) { display: none; }
+      .tokens-grid > a > div:nth-child(2) { font-size: .95rem !important; }
+    }
   </style>
   <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 </head>
@@ -879,7 +903,7 @@
     menu.classList.toggle('open');
     const isOpen = menu.classList.contains('open');
     btn.innerHTML = isOpen
-      ? '<span style="transform:rotate(45deg);transform-origin:center;margin-top:7px"></span><span style="opacity:0"></span><span style="transform:rotate(-45deg);transform-origin:center;margin-top:-7px"></span>'
+      ? '<b style="font-size:1.25rem;line-height:1;color:var(--gold);font-weight:400;padding:0 .2rem">✕</b>'
       : '<span></span><span></span><span></span>';
   }
   function closeMobileMenu() {
@@ -901,7 +925,7 @@
       Estratégias de investimento em mercados tradicionais, criptomoedas e DeFi — construídas para quem quer alcançar independência financeira real.
     </p>
     <div class="hero-actions">
-      <a href="#estrategias" class="btn-primary">Explorar Estratégias</a>
+      <a href="#dashboard" class="btn-primary">Explorar o Dashboard</a>
       <a href="#mercados" class="btn-outline">Ver Mercados</a>
     </div>
   </div>
@@ -1042,7 +1066,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="btc-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="btc-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
-      <canvas id="btc-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
+      <canvas id="btc-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;grid-column:1/-1;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #627EEA" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1055,7 +1079,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="eth-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="eth-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
-      <canvas id="eth-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
+      <canvas id="eth-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;grid-column:1/-1;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #9945FF" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1068,7 +1092,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="sol-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="sol-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
-      <canvas id="sol-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
+      <canvas id="sol-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;grid-column:1/-1;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #6FBCF0" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1081,7 +1105,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="sui-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="sui-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
-      <canvas id="sui-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
+      <canvas id="sui-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;grid-column:1/-1;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #F3BA2F" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1094,7 +1118,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="bnb-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="bnb-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
-      <canvas id="bnb-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
+      <canvas id="bnb-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;grid-column:1/-1;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #2BCCF7" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1107,7 +1131,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="aave-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="aave-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
-      <canvas id="aave-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
+      <canvas id="aave-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;grid-column:1/-1;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #375BD2" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1120,7 +1144,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="link-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="link-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
-      <canvas id="link-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
+      <canvas id="link-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;grid-column:1/-1;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #FF007A" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1133,7 +1157,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="uni-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="uni-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
-      <canvas id="uni-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
+      <canvas id="uni-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;grid-column:1/-1;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #26A17B" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1146,7 +1170,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="usdt-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="usdt-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
-      <canvas id="usdt-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
+      <canvas id="usdt-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;grid-column:1/-1;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #FF6B00" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1159,7 +1183,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="xmr-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="xmr-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
-      <canvas id="xmr-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
+      <canvas id="xmr-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;grid-column:1/-1;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #00C2FF" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1172,7 +1196,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="hype-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="hype-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
-      <canvas id="hype-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
+      <canvas id="hype-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;grid-column:1/-1;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #FFD700" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1185,7 +1209,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="gold-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="gold-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
-      <canvas id="gold-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
+      <canvas id="gold-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;grid-column:1/-1;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #F4B728" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1198,7 +1222,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="zec-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="zec-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
-      <canvas id="zec-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
+      <canvas id="zec-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;grid-column:1/-1;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #E6007A" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1211,7 +1235,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="dot-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="dot-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
-      <canvas id="dot-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
+      <canvas id="dot-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;grid-column:1/-1;"></canvas>
       </div>
     </div>
     <div style="background:var(--dark);padding:1.4rem;transition:background .25s;border-top:2px solid #00AAE4" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
@@ -1224,11 +1248,11 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Mkt Cap</div><div id="xrp-mcap" style="font-size:.64rem;color:var(--white)">—</div></div>
         <div style="background:rgba(255,255,255,.05);padding:.35rem .5rem"><div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Vol 24h</div><div id="xrp-vol" style="font-size:.64rem;color:var(--white)">—</div></div>
-      <canvas id="xrp-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;"></canvas>
+      <canvas id="xrp-spark" width="120" height="32" style="width:100%;height:32px;margin-top:.5rem;display:block;grid-column:1/-1;"></canvas>
       </div>
     </div>
   </div>
-  <div style="text-align:right;margin-top:.8rem;font-size:.65rem;color:var(--muted)">Dados: CoinGecko · Actualização automática a cada 60s</div>
+  <div style="text-align:right;margin-top:.8rem;font-size:.65rem;color:var(--muted)">Dados: CoinGecko · <span id="cg-status">a carregar…</span></div>
   <!-- BITCOIN DOMINANCE -->
   <div style="margin-top:2rem;background:var(--card);border:1px solid var(--border);padding:1rem 1.2rem;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem">
@@ -2508,21 +2532,21 @@
   <!-- Fear & Greed + Extra indicators -->
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:1px;">
     <a href="https://edition.cnn.com/markets/fear-and-greed" target="_blank" style="background:var(--dark);padding:1.8rem;text-decoration:none;transition:background .25s;border-top:2px solid #f87171;" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
-      <div style="font-size:1.5rem;margin-bottom:.8rem">😱</div>
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">😱</div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">Fear & Greed Index</div>
       <div style="font-size:.65rem;color:#f87171;margin-bottom:.8rem">CNN · Sentimento de Mercado</div>
       <div style="font-size:.68rem;color:var(--muted)">Mede o sentimento dos investidores entre medo extremo e ganância extrema. Útil para identificar pontos de entrada e saída.</div>
       <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold)">Ver Indicador →</div>
     </a>
     <a href="https://www.multpl.com/shiller-pe" target="_blank" style="background:var(--dark);padding:1.8rem;text-decoration:none;transition:background .25s;border-top:2px solid #3B82F6;" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
-      <div style="font-size:1.5rem;margin-bottom:.8rem">📉</div>
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">📉</div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">Shiller P/E (CAPE)</div>
       <div style="font-size:.65rem;color:#3B82F6;margin-bottom:.8rem">Cyclically Adjusted P/E Ratio</div>
       <div style="font-size:.68rem;color:var(--muted)">O rácio P/E ajustado ao ciclo económico. Desenvolvido por Robert Shiller para avaliar o mercado a longo prazo.</div>
       <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold)">Ver Indicador →</div>
     </a>
     <a href="https://alternative.me/crypto/fear-and-greed-index/" target="_blank" style="background:var(--dark);padding:1.8rem;text-decoration:none;transition:background .25s;border-top:2px solid #F7931A;" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
-      <div style="font-size:1.5rem;margin-bottom:.8rem">₿</div>
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">₿</div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">Crypto Fear & Greed</div>
       <div style="font-size:.65rem;color:#F7931A;margin-bottom:.8rem">Alternative.me · Bitcoin Sentiment</div>
       <div style="font-size:.68rem;color:var(--muted)">Índice de medo e ganância específico para o mercado cripto. Essencial para timing de entradas em Bitcoin e altcoins.</div>
@@ -2847,7 +2871,7 @@
       <div style="width:20px;height:2px;background:linear-gradient(90deg,#F7931A,transparent)"></div>
       <span style="font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:#F7931A">Mining Bitcoin</span>
     </div>
-    <div style="display:grid;grid-template-columns:1fr auto;align-items:end;margin-bottom:2.5rem;gap:1rem;flex-wrap:wrap;">
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:end;margin-bottom:2.5rem;gap:1rem;flex-wrap:wrap;" class="mining-head">
       <div>
         <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:300;color:var(--white);line-height:1.1;margin-bottom:.6rem">
           Minera <em style="font-style:italic;color:#F7931A;text-shadow:0 0 30px rgba(247,147,26,.4)">Bitcoin</em><br/>com a comunidade
@@ -2863,7 +2887,7 @@
     </div>
 
     <!-- Main grid -->
-    <div style="display:grid;grid-template-columns:1fr 1.7fr;border:1px solid rgba(247,147,26,.2);background:var(--border);" class="reveal">
+    <div style="display:grid;grid-template-columns:1fr 1.7fr;border:1px solid rgba(247,147,26,.2);background:var(--border);" class="mining-grid reveal">
 
       <!-- LEFT: Info -->
       <div style="background:linear-gradient(160deg,rgba(247,147,26,.05) 0%,var(--dark) 60%);display:flex;flex-direction:column;border-right:1px solid rgba(247,147,26,.15);">
@@ -2940,6 +2964,328 @@
         <div style="position:absolute;inset:0;border:1px solid rgba(247,147,26,.1);pointer-events:none;z-index:2;"></div>
       </div>
 
+    </div>
+  </div>
+
+</section>
+
+<!-- ATIVOS TOKENIZADOS -->
+<section id="tokenizados" style="padding:6rem 4rem;border-bottom:1px solid var(--border);">
+  <div class="section-tag">// 06 — Ativos Tokenizados</div>
+  <h2>Acções tokenizadas<br/><em>on-chain</em></h2>
+  <p class="section-desc">As Sete Magníficas, S&amp;P 500 e muitas outras acções disponíveis como tokens DeFi. Exposição a acções tradicionais diretamente na blockchain — sem corretora, sem fronteiras.</p>
+  <p style="font-size:.7rem;color:var(--gold-dim);margin-top:.8rem;padding:.6rem 1rem;border:1px solid var(--border);display:inline-block">⚠️ Ativos sintéticos · Risco de smart contract · Faz sempre DYOR antes de investir</p>
+
+  <div class="tokens-grid reveal" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-top:3rem;">
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #9ca3af" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">🍎</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">AAPLx</div>
+      <div style="font-size:.65rem;color:#9ca3af;margin-bottom:.8rem">Apple · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético on-chain com exposição ao preço da Apple. Via xStocks em Solana.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #0078d4" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">🪟</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">MSFTx</div>
+      <div style="font-size:.65rem;color:#0078d4;margin-bottom:.8rem">Microsoft · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Exposição tokenizada à Microsoft. Disponível para holding e lending no protocolo xStocks.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #4285f4" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">🔍</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">GOOGLx</div>
+      <div style="font-size:.65rem;color:#4285f4;margin-bottom:.8rem">Alphabet · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da Alphabet (Google) on-chain, com exposição ao preço da acção via xStocks.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #ff9900" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">📦</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">AMZNx</div>
+      <div style="font-size:.65rem;color:#ff9900;margin-bottom:.8rem">Amazon · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Exposição tokenizada à Amazon via xStocks. Sem conta de corretora, direto on-chain.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #0866ff" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">👤</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">METAx</div>
+      <div style="font-size:.65rem;color:#0866ff;margin-bottom:.8rem">Meta · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da Meta Platforms. Combina exposição tradicional com yield DeFi via lending.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #cc0000" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">⚡</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">TSLAx</div>
+      <div style="font-size:.65rem;color:#cc0000;margin-bottom:.8rem">Tesla · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Exposição tokenizada à Tesla on-chain. Alta volatilidade com potencial de yield adicional via DeFi.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #76b900" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">🟢</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">NVDAx</div>
+      <div style="font-size:.65rem;color:#76b900;margin-bottom:.8rem">Nvidia · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da Nvidia já disponível no xStocks. Exposição à IA on-chain com possibilidade de yield via lending.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://app.piggybank.fi/USDC?ref=JZKE0W460F" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #22c55e" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">📊</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">SPYx</div>
+      <div style="font-size:.65rem;color:#22c55e;margin-bottom:.8rem">S&amp;P 500 ETF · Piggy Bank ×5</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token do ETF SPY tokenizado. No Piggy Bank tem multiplicador ×5 de pontos — máximo boost disponível.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no Piggy Bank →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #f97316" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">₿</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">MSTRx</div>
+      <div style="font-size:.65rem;color:#f97316;margin-bottom:.8rem">MicroStrategy · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Exposição tokenizada à MicroStrategy — proxy de Bitcoin com alavancagem.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #3B82F6" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">📊</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">QQQx · Nasdaq 100</div>
+      <div style="font-size:.65rem;color:#3B82F6;margin-bottom:.8rem">Invesco QQQ · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético do ETF Nasdaq 100. Exposição on-chain às maiores tecnológicas mundiais sem conta de corretora.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #E50914" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">🎬</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">NETFLIXx</div>
+      <div style="font-size:.65rem;color:#E50914;margin-bottom:.8rem">Netflix · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Exposição tokenizada à Netflix on-chain. Acede ao crescimento do streaming sem intermediários tradicionais.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #FFC72C" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">🍔</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">MCDx</div>
+      <div style="font-size:.65rem;color:#FFC72C;margin-bottom:.8rem">McDonald's · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da McDonald's. Exposição defensiva a uma das marcas mais resilientes do mundo, agora on-chain.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #3b6fd4" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">💨</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">LINx · Linde</div>
+      <div style="font-size:.65rem;color:#3b6fd4;margin-bottom:.8rem">Linde plc · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da Linde, líder mundial em gases industriais. Exposição defensiva on-chain.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #cc785c" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">🤖</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">ANTHx · Anthropic</div>
+      <div style="font-size:.65rem;color:#cc785c;margin-bottom:.8rem">Anthropic · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da Anthropic, criadora do Claude. Exposição à IA de segurança on-chain.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #10a37f" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">💬</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">OPAIx · OpenAI</div>
+      <div style="font-size:.65rem;color:#10a37f;margin-bottom:.8rem">OpenAI · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da OpenAI, criadora do ChatGPT. Exposição on-chain ao líder da IA generativa.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #3b82f6" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">🚀</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">SPCEx · SpaceX</div>
+      <div style="font-size:.65rem;color:#3b82f6;margin-bottom:.8rem">SpaceX · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da SpaceX on-chain. Exposição à empresa líder em exploração espacial comercial.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #9ca3af" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">🔍</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">PLTRx · Palantir</div>
+      <div style="font-size:.65rem;color:#9ca3af;margin-bottom:.8rem">Palantir Technologies · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da Palantir. Exposição on-chain ao líder em analytics e IA governamental.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #3b82f6" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">⚙️</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">MRVLx · Marvell</div>
+      <div style="font-size:.65rem;color:#3b82f6;margin-bottom:.8rem">Marvell Technology · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da Marvell. Exposição aos semicondutores de data center e IA on-chain.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #e11d48" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">💊</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">LLYx · Eli Lilly</div>
+      <div style="font-size:.65rem;color:#e11d48;margin-bottom:.8rem">Eli Lilly · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da Eli Lilly. Exposição ao líder farmacêutico em GLP-1 e oncologia.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #e31837" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">🧠</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">MUx · Micron</div>
+      <div style="font-size:.65rem;color:#e31837;margin-bottom:.8rem">Micron Technology · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da Micron. Exposição on-chain ao maior fabricante de memória DRAM e NAND.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #ff6600" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">📡</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">OUSTx · Ouster</div>
+      <div style="font-size:.65rem;color:#ff6600;margin-bottom:.8rem">Ouster · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da Ouster. Exposição à tecnologia LiDAR para veículos autónomos on-chain.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #4f7fd1" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">🛡️</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">LMTx · Lockheed Martin</div>
+      <div style="font-size:.65rem;color:#4f7fd1;margin-bottom:.8rem">Lockheed Martin · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da Lockheed Martin. Exposição à defesa e aeroespacial on-chain.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #6b8cba" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">⚓</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">GDx · General Dynamics</div>
+      <div style="font-size:.65rem;color:#6b8cba;margin-bottom:.8rem">General Dynamics · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da General Dynamics. Exposição à defesa naval e terrestre on-chain.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #00a651" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">⚡</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">BEx · Bloom Energy</div>
+      <div style="font-size:.65rem;color:#00a651;margin-bottom:.8rem">Bloom Energy · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da Bloom Energy. Exposição à energia limpa e células de combustível on-chain.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #ef4444" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">🔋</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">VSTx · Vistra</div>
+      <div style="font-size:.65rem;color:#ef4444;margin-bottom:.8rem">Vistra Corp · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da Vistra. Exposição ao maior produtor de energia dos EUA on-chain.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #f59e0b" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">🏗️</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">VRTx · Vertiv</div>
+      <div style="font-size:.65rem;color:#f59e0b;margin-bottom:.8rem">Vertiv Holdings · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da Vertiv. Exposição à infraestrutura de data centers e energia on-chain.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #e2231a" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">💾</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">SNDKx · SanDisk</div>
+      <div style="font-size:.65rem;color:#e2231a;margin-bottom:.8rem">SanDisk · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da SanDisk. Exposição ao líder em armazenamento flash on-chain.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #0a84ff" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">🔬</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">ASMLx · ASML</div>
+      <div style="font-size:.65rem;color:#0a84ff;margin-bottom:.8rem">ASML Holding · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da ASML. Exposição ao monopólio em máquinas EUV para semicondutores.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #0071c5" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">💡</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">INTCx · Intel</div>
+      <div style="font-size:.65rem;color:#0071c5;margin-bottom:.8rem">Intel · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da Intel. Exposição ao gigante dos processadores em fase de reestruturação.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #1f70c1" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">🖥️</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">IBMx · IBM</div>
+      <div style="font-size:.65rem;color:#1f70c1;margin-bottom:.8rem">IBM · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da IBM. Exposição à computação quântica, cloud e IA empresarial on-chain.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #cc0000" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">🏭</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">TSMx · TSMC</div>
+      <div style="font-size:.65rem;color:#cc0000;margin-bottom:.8rem">Taiwan Semiconductor · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da TSMC. Exposição ao maior fabricante de chips do mundo on-chain.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+    <a href="https://defi.xstocks.fi/points?ref=MAXBRAGA" target="_blank" rel="noopener" style="background:var(--black);padding:1.8rem;text-decoration:none;transition:background .25s;display:block;border-top:2px solid #e11d48" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--black)'">
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">📶</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">AVGOx · Broadcom</div>
+      <div style="font-size:.65rem;color:#e11d48;margin-bottom:.8rem">Broadcom · xStocks</div>
+      <div style="font-size:.68rem;color:var(--gold-dim)">Token sintético da Broadcom. Exposição ao líder em chips de rede e infraestrutura de IA on-chain.</div>
+      <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold);letter-spacing:.08em">Ver no xStocks →</div>
+    </a>
+  </div>
+</section>
+
+<!-- CALCULADORAS & NOTICIAS -->
+<section style="padding:5rem 4rem;border-bottom:1px solid var(--border);background:var(--dark);">
+
+  <div class="section-tag">// Calculadora DCA</div>
+  <h2>Dollar Cost<br/><em>Averaging</em></h2>
+  <p class="section-desc">Simula o impacto de investires um valor fixo mensalmente num activo ao longo do tempo.</p>
+  <div class="calc-grid reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem;">
+    <div style="background:var(--card);border:1px solid var(--border);padding:2rem;border-radius:4px;">
+      <div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem">Parâmetros</div>
+      <div style="margin-bottom:1.2rem;"><label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Investimento Mensal (€)</label><input id="dca-amount" type="number" value="100" min="1" style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.9rem;outline:none;border-radius:3px;box-sizing:border-box;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" oninput="calcDCA()"/></div><div style="margin-bottom:1.2rem;"><label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Duração (anos)</label><input id="dca-years" type="number" value="5" min="1" max="30" style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.9rem;outline:none;border-radius:3px;box-sizing:border-box;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" oninput="calcDCA()"/></div><div style="margin-bottom:1.2rem;"><label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Retorno Anual Esperado (%)</label><input id="dca-return" type="number" value="10" min="1" max="100" style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.9rem;outline:none;border-radius:3px;box-sizing:border-box;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" oninput="calcDCA()"/></div><div style="margin-bottom:0rem;"><label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Activo</label><select id="dca-asset" onchange="calcDCA()" style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.82rem;outline:none;border-radius:3px;box-sizing:border-box;"><option value="BTC">Bitcoin (BTC)</option><option value="ETH">Ethereum (ETH)</option><option value="SP500" selected>S&amp;P 500</option><option value="NASDAQ">Nasdaq 100</option><option value="GOLD">Ouro</option><option value="CUSTOM">Personalizado</option></select></div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);padding:2rem;border-radius:4px;">
+      <div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem">Resultado</div>
+      <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem;"><div style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid var(--gold);"><div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Total Investido</div><div id="dca-invested" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--white)">—</div></div><div style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid #22c55e;"><div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Valor Final Estimado</div><div id="dca-final" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#22c55e">—</div></div><div style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid #3B82F6;"><div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Lucro Estimado</div><div id="dca-profit" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#3B82F6">—</div></div><div style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid #f97316;"><div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Multiplicador</div><div id="dca-mult" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#f97316">—</div></div></div>
+      <div style="font-size:.62rem;color:var(--muted);line-height:1.7">⚠️ Simulação baseada em retorno anual constante. Resultados reais variam. Não constitui aconselhamento financeiro.</div>
+    </div>
+  </div>
+
+  <div style="margin-top:5rem;">
+    <div class="section-tag">// Juros Compostos</div>
+    <h2>O Poder dos<br/><em>Juros Compostos</em></h2>
+    <p class="section-desc">Albert Einstein chamou-lhe "a oitava maravilha do mundo". Descobre quanto vale o teu capital ao longo do tempo.</p>
+    <div class="calc-grid reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem;">
+    <div style="background:var(--card);border:1px solid var(--border);padding:2rem;border-radius:4px;">
+      <div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem">Parâmetros</div>
+      <div style="margin-bottom:1.2rem;"><label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Capital Inicial (€)</label><input id="ci-capital" type="number" value="1000" min="0" style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.9rem;outline:none;border-radius:3px;box-sizing:border-box;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" oninput="calcCI()"/></div><div style="margin-bottom:1.2rem;"><label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Taxa Anual (%)</label><input id="ci-rate" type="number" value="8" min="0" max="100" step="0.1" style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.9rem;outline:none;border-radius:3px;box-sizing:border-box;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" oninput="calcCI()"/></div><div style="margin-bottom:1.2rem;"><label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Período (anos)</label><input id="ci-years" type="number" value="10" min="1" max="50" style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.9rem;outline:none;border-radius:3px;box-sizing:border-box;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" oninput="calcCI()"/></div><div style="margin-bottom:1.2rem;"><label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Contribuição Mensal (€)</label><input id="ci-monthly" type="number" value="0" min="0" style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.9rem;outline:none;border-radius:3px;box-sizing:border-box;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" oninput="calcCI()"/></div><div style="margin-bottom:0rem;"><label style="font-size:.65rem;color:var(--muted);display:block;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Capitalização</label><select id="ci-freq" onchange="calcCI()" style="width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;font-family:'DM Mono',monospace;font-size:.82rem;outline:none;border-radius:3px;box-sizing:border-box;"><option value="12" selected>Mensal</option><option value="4">Trimestral</option><option value="2">Semestral</option><option value="1">Anual</option></select></div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);padding:2rem;border-radius:4px;">
+      <div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem">Resultado</div>
+      <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem;"><div style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid var(--gold);"><div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Capital Final</div><div id="ci-final" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--white)">—</div></div><div style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid #22c55e;"><div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Total Juros Gerados</div><div id="ci-interest" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#22c55e">—</div></div><div style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid #3B82F6;"><div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Total Investido</div><div id="ci-total-invested" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#3B82F6">—</div></div><div style="background:var(--dark);padding:1rem;border-radius:3px;border-left:3px solid #f97316;"><div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">% de Crescimento</div><div id="ci-growth" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#f97316">—</div></div></div>
+      <div style="font-size:.62rem;color:var(--muted);line-height:1.7">⚠️ Simulação com taxa constante. Não inclui impostos nem inflação.</div>
+    </div>
+    </div>
+  </div>
+
+  <div style="margin-top:5rem;">
+    <div class="section-tag">// Notícias &amp; Mercados</div>
+    <h2>Últimas<br/><em>Notícias</em></h2>
+    <p class="section-desc">Mantém-te actualizado com as últimas notícias de cripto, mercados e finanças.</p>
+    <div class="news-grid reveal" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:3rem;">
+      <a href="https://cointelegraph.com" target="_blank" rel="noopener" style="background:var(--dark);padding:1.5rem;text-decoration:none;transition:background .25s;border-top:2px solid #F7931A;" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
+        <div style="font-size:1.3rem;margin-bottom:.8rem">₿</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">CoinTelegraph</div>
+        <div style="font-size:.65rem;color:#F7931A;margin-bottom:.7rem">Notícias Cripto · EN</div>
+        <div style="font-size:.68rem;color:var(--muted)">O maior portal de notícias cripto do mundo. Análises, mercados e novidades blockchain em tempo real.</div>
+        <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold)">cointelegraph.com →</div>
+      </a>
+      <a href="https://coindesk.com" target="_blank" rel="noopener" style="background:var(--dark);padding:1.5rem;text-decoration:none;transition:background .25s;border-top:2px solid #627EEA;" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
+        <div style="font-size:1.3rem;margin-bottom:.8rem">📰</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">CoinDesk</div>
+        <div style="font-size:.65rem;color:#627EEA;margin-bottom:.7rem">Notícias Cripto · EN</div>
+        <div style="font-size:.68rem;color:var(--muted)">Jornalismo financeiro de referência no mundo cripto. Cobertura de regulação, institucionais e mercados.</div>
+        <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold)">coindesk.com →</div>
+      </a>
+      <a href="https://decrypt.co" target="_blank" rel="noopener" style="background:var(--dark);padding:1.5rem;text-decoration:none;transition:background .25s;border-top:2px solid #9945FF;" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
+        <div style="font-size:1.3rem;margin-bottom:.8rem">🔓</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">Decrypt</div>
+        <div style="font-size:.65rem;color:#9945FF;margin-bottom:.7rem">Notícias Cripto & Web3 · EN</div>
+        <div style="font-size:.68rem;color:var(--muted)">Notícias de cripto, NFT, DeFi e Web3. Linguagem acessível e análises de qualidade.</div>
+        <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold)">decrypt.co →</div>
+      </a>
+      <a href="https://www.reuters.com/finance" target="_blank" rel="noopener" style="background:var(--dark);padding:1.5rem;text-decoration:none;transition:background .25s;border-top:2px solid #f97316;" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
+        <div style="font-size:1.3rem;margin-bottom:.8rem">🌍</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">Reuters Finance</div>
+        <div style="font-size:.65rem;color:#f97316;margin-bottom:.7rem">Mercados Globais · EN</div>
+        <div style="font-size:.68rem;color:var(--muted)">A agência de notícias mais credível do mundo. Cobertura de mercados, macroeconomia e finanças globais.</div>
+        <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold)">reuters.com →</div>
+      </a>
+      <a href="https://www.infomoney.com.br" target="_blank" rel="noopener" style="background:var(--dark);padding:1.5rem;text-decoration:none;transition:background .25s;border-top:2px solid #22c55e;" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
+        <div style="font-size:1.3rem;margin-bottom:.8rem">📊</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">InfoMoney</div>
+        <div style="font-size:.65rem;color:#22c55e;margin-bottom:.7rem">Finanças · PT</div>
+        <div style="font-size:.68rem;color:var(--muted)">Portal de finanças em português com notícias de bolsa, investimentos e economia para o investidor lusófono.</div>
+        <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold)">infomoney.com.br →</div>
+      </a>
+      <a href="https://thedefiant.io" target="_blank" rel="noopener" style="background:var(--dark);padding:1.5rem;text-decoration:none;transition:background .25s;border-top:2px solid #06b6d4;" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--dark)'">
+        <div style="font-size:1.3rem;margin-bottom:.8rem">⚡</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:.3rem">The Defiant</div>
+        <div style="font-size:.65rem;color:#06b6d4;margin-bottom:.7rem">DeFi & Web3 · EN</div>
+        <div style="font-size:.68rem;color:var(--muted)">O melhor portal especializado em DeFi e Web3. Análises profundas de protocolos, yields e tendências.</div>
+        <div style="margin-top:.8rem;font-size:.62rem;color:var(--gold)">thedefiant.io →</div>
+      </a>
     </div>
   </div>
 
@@ -3149,66 +3495,8 @@
     document.getElementById('tax-rate-eff').textContent = effRate.toFixed(1) + '%';
   }
 
-  // ── SIMULADOR PORTFÓLIO ──
-  function updatePort(slider) {
-    const parent = slider.parentElement;
-    const pct = parent.querySelector('.port-pct');
-    if (pct) pct.textContent = slider.value + '%';
-    calcPort();
-  }
-
-  function calcPort() {
-    const capital = parseFloat(document.getElementById('port-capital').value) || 0;
-    const sliders = document.querySelectorAll('#port-sliders input[type=range]');
-    const containers = document.querySelectorAll('#port-sliders > div');
-    let total = 0;
-    const items = [];
-    sliders.forEach((s, i) => {
-      const pct = parseFloat(s.value);
-      total += pct;
-      const container = containers[i];
-      items.push({
-        name: container.dataset.name,
-        color: container.dataset.color,
-        pct: pct,
-        value: (pct / 100) * capital
-      });
-    });
-
-    // Update total %
-    const totalEl = document.getElementById('port-total-pct');
-    totalEl.innerHTML = `Total: <strong style="color:${total === 100 ? 'var(--gold)' : total > 100 ? '#f87171' : '#f59e0b'}">${total}%</strong>${total > 100 ? ' ⚠️ Excede 100%' : total < 100 ? ` (${100-total}% por alocar)` : ' ✅'}`;
-
-    // Update bars
-    const barsEl = document.getElementById('port-bars');
-    barsEl.innerHTML = items.map(item => `
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:.25rem;">
-          <span style="font-size:.7rem;color:${item.color}">${item.name}</span>
-          <span style="font-size:.7rem;color:var(--white)">€${item.value.toLocaleString('pt-PT',{minimumFractionDigits:2,maximumFractionDigits:2})} <span style="color:var(--muted)">(${item.pct}%)</span></span>
-        </div>
-        <div style="background:var(--dark);border-radius:2px;height:6px;overflow:hidden;">
-          <div style="background:${item.color};height:100%;width:${item.pct}%;transition:width .3s;"></div>
-        </div>
-      </div>
-    `).join('');
-
-    // Update visual bar
-    const visualEl = document.getElementById('port-visual');
-    visualEl.innerHTML = items.filter(i => i.pct > 0).map(item =>
-      `<div style="background:${item.color};width:${item.pct}%;transition:width .3s;" title="${item.name}: ${item.pct}%"></div>`
-    ).join('');
-
-    // Update total
-    document.getElementById('port-total-val').querySelector('div:last-child').textContent =
-      '€' + capital.toLocaleString('pt-PT', {minimumFractionDigits:2, maximumFractionDigits:2});
-  }
-
   // Init
   calcTax();
-  calcPort();
-  fetchIndices();
-  setInterval(fetchIndices, 60000);
 </script>
 
 
@@ -3223,7 +3511,7 @@
 
     <!-- Alert BTC -->
     <div style="background:var(--dark);padding:2rem;border-top:2px solid #F7931A;">
-      <div style="font-size:1.5rem;margin-bottom:.8rem">₿</div>
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">₿</div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--white);margin-bottom:.5rem">Bitcoin</div>
       <div style="font-size:.65rem;color:var(--muted);margin-bottom:1.2rem">Define o preço alvo e recebe alerta</div>
       <div style="display:flex;gap:.5rem;margin-bottom:.8rem;">
@@ -3243,7 +3531,7 @@
 
     <!-- Alert ETH -->
     <div style="background:var(--dark);padding:2rem;border-top:2px solid #627EEA;">
-      <div style="font-size:1.5rem;margin-bottom:.8rem">Ξ</div>
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">Ξ</div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--white);margin-bottom:.5rem">Ethereum</div>
       <div style="font-size:.65rem;color:var(--muted);margin-bottom:1.2rem">Define o preço alvo e recebe alerta</div>
       <div style="display:flex;gap:.5rem;margin-bottom:.8rem;">
@@ -3263,7 +3551,7 @@
 
     <!-- Alert personalizado -->
     <div style="background:var(--dark);padding:2rem;border-top:2px solid var(--gold);">
-      <div style="font-size:1.5rem;margin-bottom:.8rem">🎯</div>
+      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">🎯</div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--white);margin-bottom:.5rem">Personalizado</div>
       <div style="font-size:.65rem;color:var(--muted);margin-bottom:1.2rem">Qualquer activo à tua escolha</div>
       <div style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:.8rem;">
@@ -3492,7 +3780,7 @@ renderGloss();
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">BragaFinance</div>
-  <div class="footer-copy">© 2026 Braga Finance · Conteúdo educativo, não constitui aconselhamento financeiro.</div>
+  <div class="footer-copy">© 2026 Braga Finance · Conteúdo educativo, não constitui aconselhamento financeiro.<span style="opacity:.45"> · v29out-B</span></div>
   <div class="footer-links">
     <a href="https://t.me/+dm0Hug3qgcAzODA0" target="_blank">Telegram</a>
     <a href="https://discord.gg/HsgbC7AES4" target="_blank">Discord</a>
@@ -3502,27 +3790,113 @@ renderGloss();
 </footer>
 
 <script>
-  // ── EUR RATE + CRYPTO ──
-  let eurRate = 0.92;
+  // ── EUR RATE + CRYPTO (1 pedido à CoinGecko por actualização) ──
+  let eurRate = parseFloat(localStorage.getItem('bf_eur_rate')) || 0.92;
+
+  const CG_COINS = { btc:'bitcoin', eth:'ethereum', sol:'solana', sui:'sui', bnb:'binancecoin', aave:'aave', link:'chainlink', uni:'uniswap', usdt:'tether', xmr:'monero', hype:'hyperliquid', zec:'zcash', dot:'polkadot', xrp:'ripple', gold:'tether-gold' };
+  const CG_URL = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=' + Object.values(CG_COINS).join(',') + '&sparkline=true&price_change_percentage=24h';
+
+  const bfFmt = {
+    p: (n) => n >= 1000 ? '$' + n.toLocaleString('en-US', {maximumFractionDigits:0}) : (n >= 1 ? '$' + n.toFixed(2) : '$' + n.toFixed(4)),
+    e: (n) => { const v = n * eurRate; return (v >= 1000 ? v.toLocaleString('en-US', {maximumFractionDigits:0}) : (v >= 1 ? v.toFixed(2) : v.toFixed(4))) + ' €'; },
+    b: (n) => { if (!n) return '—'; if (n >= 1e12) return '$' + (n/1e12).toFixed(2) + 'T'; if (n >= 1e9) return '$' + (n/1e9).toFixed(1) + 'B'; return '$' + (n/1e6).toFixed(0) + 'M'; },
+    c: (c) => { if (c === null || c === undefined) return '—'; const v = c.toFixed(2); return c >= 0 ? '<span style="color:#4ADE80">▲ +' + v + '%</span>' : '<span style="color:#F87171">▼ ' + v + '%</span>'; }
+  };
+
+  function drawSpark(id, prices) {
+    const canvas = document.getElementById(id);
+    if (!canvas || !canvas.getContext) return;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.round((canvas.clientWidth || 240) * dpr);
+    canvas.height = Math.round(32 * dpr);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const W = canvas.width, H = canvas.height;
+    const min = Math.min(...prices), max = Math.max(...prices), range = (max - min) || 1;
+    const up = prices[prices.length - 1] >= prices[0];
+    const pt = (p, i) => [(i / (prices.length - 1)) * W, H - ((p - min) / range) * (H * 0.85) - H * 0.07];
+    ctx.clearRect(0, 0, W, H);
+    const grad = ctx.createLinearGradient(0, 0, 0, H);
+    grad.addColorStop(0, up ? 'rgba(74,222,128,.25)' : 'rgba(248,113,113,.25)');
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.beginPath();
+    prices.forEach((p, i) => { const [x, y] = pt(p, i); i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y); });
+    ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+    ctx.fillStyle = grad; ctx.fill();
+    ctx.beginPath();
+    prices.forEach((p, i) => { const [x, y] = pt(p, i); i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y); });
+    ctx.strokeStyle = up ? '#4ADE80' : '#F87171';
+    ctx.lineWidth = 1.5 * dpr; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    ctx.stroke();
+  }
+
+  function renderCrypto(list) {
+    const byId = {};
+    list.forEach(c => byId[c.id] = c);
+    Object.keys(CG_COINS).forEach(key => {
+      const d = byId[CG_COINS[key]];
+      if (!d) return;
+      const el = (s) => document.getElementById(key + s);
+      const price = d.current_price, chg = d.price_change_percentage_24h;
+      if (el('-price')) el('-price').textContent = bfFmt.p(price);
+      if (el('-change')) el('-change').innerHTML = bfFmt.c(chg);
+      if (el('-eur')) el('-eur').textContent = bfFmt.e(price);
+      if (el('-mcap')) el('-mcap').textContent = bfFmt.b(d.market_cap);
+      if (el('-vol')) el('-vol').textContent = bfFmt.b(d.total_volume);
+      const sp = d.sparkline_in_7d && d.sparkline_in_7d.price;
+      if (sp && sp.length > 10) drawSpark(key + '-spark', sp.slice(-24));
+      if (key === 'btc') {
+        document.querySelectorAll('#hero-btc-price').forEach(n => {
+          n.textContent = (chg >= 0 ? '▲ +' : '▼ ') + Math.abs(chg).toFixed(2) + '% · $' + Math.round(price).toLocaleString('en-US');
+          n.className = chg >= 0 ? 'up' : 'dn';
+        });
+      }
+    });
+  }
+
+  function setCgStatus(ts, failed) {
+    const el = document.getElementById('cg-status');
+    if (!el) return;
+    const hhmm = (t) => new Date(t).toLocaleTimeString('pt-PT', {hour:'2-digit', minute:'2-digit'});
+    if (!failed && ts) { el.textContent = 'actualizado às ' + hhmm(ts); return; }
+    let cached = null;
+    try { cached = JSON.parse(localStorage.getItem('bf_crypto_cache') || 'null'); } catch (e) {}
+    el.textContent = cached ? 'a mostrar dados das ' + hhmm(cached.t) + ' · a tentar de novo…' : 'sem resposta da CoinGecko · a tentar de novo…';
+  }
+
+  let cgFails = 0, cgTimer = null;
+  function scheduleCrypto(ms) { clearTimeout(cgTimer); cgTimer = setTimeout(fetchCryptoPrices, ms); }
+
   async function fetchCryptoPrices() {
     try {
-      const rEur = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd-coin&vs_currencies=eur');
-      const dEur = await rEur.json();
-      if (dEur['usd-coin']) eurRate = dEur['usd-coin'].eur;
-      const ids = 'bitcoin,ethereum,solana,aave,binancecoin,chainlink,uniswap,tether,monero,hyperliquid,zcash,polkadot,ripple';
-      const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true&include_market_cap=true&include_24hr_vol=true`);
-      const data = await res.json();
-      const fP=(n)=>n>=1000?'$'+n.toLocaleString('en-US',{maximumFractionDigits:0}):'$'+n.toFixed(2);
-      const fE=(n)=>n>=1000?'€'+(n*eurRate).toLocaleString('en-US',{maximumFractionDigits:0}):'€'+(n*eurRate).toFixed(2);
-      const fB=(n)=>{if(!n)return'—';if(n>=1e12)return'$'+(n/1e12).toFixed(2)+'T';if(n>=1e9)return'$'+(n/1e9).toFixed(1)+'B';return'$'+(n/1e6).toFixed(0)+'M';};
-      const fC=(c)=>{if(!c&&c!==0)return'—';const v=c.toFixed(2);return c>=0?`<span style="color:#4ADE80">▲ +${v}%</span>`:`<span style="color:#F87171">▼ ${v}%</span>`;};
-      const set=(id,coin)=>{const d=data[coin];if(!d)return;const el=(s)=>document.getElementById(id+s);if(el('-price'))el('-price').textContent=fP(d.usd);if(el('-change'))el('-change').innerHTML=fC(d.usd_24h_change);if(el('-eur'))el('-eur').textContent=fE(d.usd)+' €';if(el('-mcap'))el('-mcap').textContent=fB(d.usd_market_cap);if(el('-vol'))el('-vol').textContent=fB(d.usd_24h_vol);};
-      set('btc','bitcoin');set('eth','ethereum');set('sol','solana');set('bnb','binancecoin');set('aave','aave');set('link','chainlink');set('uni','uniswap');set('usdt','tether');set('xmr','monero');set('hype','hyperliquid');set('zec','zcash');set('dot','polkadot');set('xrp','ripple');
-      const rS=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=sui&vs_currencies=usd&include_24hr_change=true&include_market_cap=true&include_24hr_vol=true');
-      const dS=await rS.json();if(dS.sui){const d=dS.sui;const el=(s)=>document.getElementById('sui'+s);if(el('-price'))el('-price').textContent=fP(d.usd);if(el('-change'))el('-change').innerHTML=fC(d.usd_24h_change);if(el('-eur'))el('-eur').textContent=fE(d.usd)+' €';if(el('-mcap'))el('-mcap').textContent=fB(d.usd_market_cap);if(el('-vol'))el('-vol').textContent=fB(d.usd_24h_vol);}
-      const rG=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether-gold&vs_currencies=usd&include_24hr_change=true&include_market_cap=true&include_24hr_vol=true');
-      const dG=await rG.json();if(dG['tether-gold']){const d=dG['tether-gold'];const el=(s)=>document.getElementById('gold'+s);if(el('-price'))el('-price').textContent=fP(d.usd);if(el('-change'))el('-change').innerHTML=fC(d.usd_24h_change);if(el('-eur'))el('-eur').textContent=fE(d.usd)+' €';if(el('-mcap'))el('-mcap').textContent=fB(d.usd_market_cap);if(el('-vol'))el('-vol').textContent=fB(d.usd_24h_vol);}
-    } catch(e){console.log('Crypto error:',e);}
+      const res = await fetch(CG_URL);
+      if (!res.ok) throw new Error('CoinGecko ' + res.status);
+      const list = await res.json();
+      if (!Array.isArray(list) || !list.length) throw new Error('resposta vazia');
+      try { localStorage.setItem('bf_crypto_cache', JSON.stringify({t: Date.now(), list: list})); } catch (e) {}
+      renderCrypto(list);
+      cgFails = 0;
+      setCgStatus(Date.now(), false);
+      scheduleCrypto(60000);
+    } catch (e) {
+      cgFails++;
+      console.log('Crypto:', e.message);
+      setCgStatus(null, true);
+      scheduleCrypto(Math.min(30000 * cgFails, 180000));
+    }
+  }
+
+  async function loadEurRate() {
+    try {
+      const r = await fetch('https://api.frankfurter.app/latest?from=USD&to=EUR');
+      const d = await r.json();
+      const rate = d && d.rates && d.rates.EUR;
+      if (rate) { eurRate = rate; try { localStorage.setItem('bf_eur_rate', String(rate)); } catch (e) {} }
+    } catch (e) {}
+    const a = document.getElementById('live-eurusd'), b = document.getElementById('live-usdeur'), t = document.getElementById('live-time');
+    if (a) a.textContent = (1 / eurRate).toFixed(4);
+    if (b) b.textContent = eurRate.toFixed(4);
+    if (t) t.textContent = new Date().toLocaleTimeString('pt-PT', {timeZone:'Europe/Lisbon'});
   }
 
   // ── STOCKS with EUR ──
@@ -3546,23 +3920,6 @@ renderGloss();
   async function fetchAllStocks(){for(const row of document.querySelectorAll('.stock-row')){await fetchStockPrice(row);}}
 
 
-  // ── EUR/USD LIVE RATE ──
-  async function fetchEurUsd() {
-    try {
-      const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd-coin&vs_currencies=eur');
-      const d = await r.json();
-      if (d['usd-coin']) {
-        const rate = d['usd-coin'].eur;
-        const el1 = document.getElementById('live-eurusd');
-        const el2 = document.getElementById('live-usdeur');
-        const el3 = document.getElementById('live-time');
-        if (el1) el1.textContent = (1/rate).toFixed(4);
-        if (el2) el2.textContent = rate.toFixed(4);
-        if (el3) el3.textContent = new Date().toLocaleTimeString('pt-PT', {timeZone:'Europe/Lisbon'});
-      }
-    } catch(e) {}
-  }
-
   // ── CRYPTO DOMINANCE ──
   async function fetchDominance() {
     try {
@@ -3582,40 +3939,24 @@ renderGloss();
     } catch(e) {}
   }
 
-  // ── UPGRADE: Auto-refresh all data every 60 seconds ──
-  setInterval(() => {
-    fetchCryptoPrices();
-    fetchAllStocks();
-    fetchEurUsd();
-    fetchDominance();
-  }, 60000);
-
-  // Initial load
-
-  fetchCryptoPrices();
-  fetchAllStocks();
-  fetchEurUsd();
-  fetchDominance();
-
-  // ── HERO TICKER BTC LIVE ──
-  async function updateHeroTicker() {
+  // ── ARRANQUE (um só sítio, sem pedidos duplicados) ──
+  (function showCached() {
     try {
-      const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
-      const d = await r.json();
-      if (d.bitcoin) {
-        const price = d.bitcoin.usd;
-        const chg = d.bitcoin.usd_24h_change;
-        const el = document.getElementById('hero-btc-price');
-        if (el) {
-          const fmtP = '$' + price.toLocaleString('en-US', {maximumFractionDigits:0});
-          el.textContent = (chg >= 0 ? '▲ +' : '▼ ') + Math.abs(chg).toFixed(2) + '% · ' + fmtP;
-          el.className = chg >= 0 ? 'up' : 'dn';
-        }
-      }
-    } catch(e) {}
-  }
-  updateHeroTicker();
-  setInterval(updateHeroTicker, 30000);
+      const c = JSON.parse(localStorage.getItem('bf_crypto_cache') || 'null');
+      if (c && Array.isArray(c.list)) { renderCrypto(c.list); setCgStatus(c.t, false); }
+    } catch (e) {}
+  })();
+  fetchCryptoPrices();
+  loadEurRate().then(() => {
+    try {
+      const c = JSON.parse(localStorage.getItem('bf_crypto_cache') || 'null');
+      if (c && Array.isArray(c.list)) renderCrypto(c.list);
+    } catch (e) {}
+  });
+  setInterval(loadEurRate, 3600000);
+  fetchAllStocks();
+  setTimeout(fetchDominance, 4000);
+  setInterval(fetchDominance, 300000);
 
   // ── MARKET STATUS (NYSE/NASDAQ) ──
   function updateMarketStatus() {
@@ -3657,13 +3998,11 @@ renderGloss();
   updateMarketStatus();
   setInterval(updateMarketStatus, 60000);
 
-  // Refresh every 60s
-  setInterval(fetchCryptoPrices, 60000);
   setInterval(fetchAllStocks, 60000);
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-  }, { threshold: 0.1 });
+  }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
   reveals.forEach(r => observer.observe(r));
 
   // Strategy selector
@@ -3913,77 +4252,7 @@ renderGloss();
   });
 </script>
 
-<script>
-// ── SPARKLINE CHARTS ──
-async function fetchSparklines() {
-  const coins = ['bitcoin','ethereum','solana','sui','binancecoin','aave','chainlink','uniswap','tether','monero','hyperliquid','zcash','polkadot','ripple'];
-  const ids = ['btc','eth','sol','sui','bnb','aave','link','uni','usdt','xmr','hype','zec','dot','xrp'];
 
-  try {
-    const res = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coins.join(',')}&sparkline=true&price_change_percentage=24h`);
-    const data = await res.json();
-
-    data.forEach(coin => {
-      const idx = coins.indexOf(coin.id);
-      if (idx === -1) return;
-      const id = ids[idx];
-      const canvas = document.getElementById(id + '-spark');
-      if (!canvas || !coin.sparkline_in_7d) return;
-
-      // Use last 24 points (24h from 7d data)
-      const prices = coin.sparkline_in_7d.price.slice(-24);
-      const ctx = canvas.getContext('2d');
-      const w = canvas.width;
-      const h = canvas.height;
-      const min = Math.min(...prices);
-      const max = Math.max(...prices);
-      const range = max - min || 1;
-      const isUp = prices[prices.length-1] >= prices[0];
-      const color = isUp ? '#4ADE80' : '#F87171';
-
-      ctx.clearRect(0,0,w,h);
-
-      // Draw gradient fill
-      const gradient = ctx.createLinearGradient(0,0,0,h);
-      gradient.addColorStop(0, isUp ? 'rgba(74,222,128,.25)' : 'rgba(248,113,113,.25)');
-      gradient.addColorStop(1, 'rgba(0,0,0,0)');
-
-      ctx.beginPath();
-      prices.forEach((p,i) => {
-        const x = (i / (prices.length-1)) * w;
-        const y = h - ((p - min) / range) * (h * 0.85) - h * 0.07;
-        i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
-      });
-      ctx.lineTo(w, h);
-      ctx.lineTo(0, h);
-      ctx.closePath();
-      ctx.fillStyle = gradient;
-      ctx.fill();
-
-      // Draw line
-      ctx.beginPath();
-      prices.forEach((p,i) => {
-        const x = (i / (prices.length-1)) * w;
-        const y = h - ((p - min) / range) * (h * 0.85) - h * 0.07;
-        i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
-      });
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 1.5;
-      ctx.lineJoin = 'round';
-      ctx.lineCap = 'round';
-      ctx.stroke();
-    });
-  } catch(e) { console.log('Sparkline error:', e); }
-}
-
-// Init sparklines after page load
-if (document.readyState === 'complete') {
-  setTimeout(fetchSparklines, 1500);
-} else {
-  window.addEventListener('load', () => setTimeout(fetchSparklines, 1500));
-}
-setInterval(fetchSparklines, 300000);
-</script>
 
 </body>
 </html>

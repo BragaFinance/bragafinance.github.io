@@ -3263,100 +3263,6 @@
 
 
 
-<!-- ALERTAS TELEGRAM -->
-<section style="padding:5rem 4rem;border-bottom:1px solid var(--border);background:var(--dark);">
-  <div class="section-tag">// Alertas de Preço</div>
-  <h2>Recebe Alertas<br/><em>no Telegram</em></h2>
-  <p class="section-desc">Configura alertas de preço personalizados para Bitcoin, Ethereum e outros activos directamente no Telegram.</p>
-
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:3rem;" class="reveal">
-
-    <!-- Alert BTC -->
-    <div style="background:var(--dark);padding:2rem;border-top:2px solid #F7931A;">
-      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">₿</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--white);margin-bottom:.5rem">Bitcoin</div>
-      <div style="font-size:.65rem;color:var(--muted);margin-bottom:1.2rem">Define o preço alvo e recebe alerta</div>
-      <div style="display:flex;gap:.5rem;margin-bottom:.8rem;">
-        <input id="alert-btc" type="number" placeholder="Ex: 100000"
-          style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--white);padding:.6rem .8rem;font-family:'DM Mono',monospace;font-size:.78rem;outline:none;border-radius:3px;"
-          onfocus="this.style.borderColor='#F7931A'" onblur="this.style.borderColor='var(--border)'"/>
-        <select id="alert-btc-dir" style="background:var(--card);border:1px solid var(--border);color:var(--white);padding:.6rem;font-family:'DM Mono',monospace;font-size:.75rem;outline:none;border-radius:3px;">
-          <option value="acima">↑ Acima</option>
-          <option value="abaixo">↓ Abaixo</option>
-        </select>
-      </div>
-      <button onclick="sendAlert('BTC', document.getElementById('alert-btc').value, document.getElementById('alert-btc-dir').value)"
-        style="width:100%;background:linear-gradient(135deg,#F7931A,#f59e0b);color:white;border:none;padding:.65rem;font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;cursor:pointer;border-radius:2px;">
-        Activar Alerta →
-      </button>
-    </div>
-
-    <!-- Alert ETH -->
-    <div style="background:var(--dark);padding:2rem;border-top:2px solid #627EEA;">
-      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">Ξ</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--white);margin-bottom:.5rem">Ethereum</div>
-      <div style="font-size:.65rem;color:var(--muted);margin-bottom:1.2rem">Define o preço alvo e recebe alerta</div>
-      <div style="display:flex;gap:.5rem;margin-bottom:.8rem;">
-        <input id="alert-eth" type="number" placeholder="Ex: 5000"
-          style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--white);padding:.6rem .8rem;font-family:'DM Mono',monospace;font-size:.78rem;outline:none;border-radius:3px;"
-          onfocus="this.style.borderColor='#627EEA'" onblur="this.style.borderColor='var(--border)'"/>
-        <select id="alert-eth-dir" style="background:var(--card);border:1px solid var(--border);color:var(--white);padding:.6rem;font-family:'DM Mono',monospace;font-size:.75rem;outline:none;border-radius:3px;">
-          <option value="acima">↑ Acima</option>
-          <option value="abaixo">↓ Abaixo</option>
-        </select>
-      </div>
-      <button onclick="sendAlert('ETH', document.getElementById('alert-eth').value, document.getElementById('alert-eth-dir').value)"
-        style="width:100%;background:linear-gradient(135deg,#627EEA,#3B82F6);color:white;border:none;padding:.65rem;font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;cursor:pointer;border-radius:2px;">
-        Activar Alerta →
-      </button>
-    </div>
-
-    <!-- Alert personalizado -->
-    <div style="background:var(--dark);padding:2rem;border-top:2px solid var(--gold);">
-      <div style="font-size:1.5rem;margin-bottom:.8rem;color:var(--white)">🎯</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--white);margin-bottom:.5rem">Personalizado</div>
-      <div style="font-size:.65rem;color:var(--muted);margin-bottom:1.2rem">Qualquer activo à tua escolha</div>
-      <div style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:.8rem;">
-        <input id="alert-custom-asset" type="text" placeholder="Ex: SOL, NVDA, GOLD"
-          style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--white);padding:.6rem .8rem;font-family:'DM Mono',monospace;font-size:.78rem;outline:none;border-radius:3px;box-sizing:border-box;"
-          onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"/>
-        <div style="display:flex;gap:.5rem;">
-          <input id="alert-custom-price" type="number" placeholder="Preço alvo"
-            style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--white);padding:.6rem .8rem;font-family:'DM Mono',monospace;font-size:.78rem;outline:none;border-radius:3px;"
-            onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"/>
-          <select id="alert-custom-dir" style="background:var(--card);border:1px solid var(--border);color:var(--white);padding:.6rem;font-family:'DM Mono',monospace;font-size:.75rem;outline:none;border-radius:3px;">
-            <option value="acima">↑</option>
-            <option value="abaixo">↓</option>
-          </select>
-        </div>
-      </div>
-      <button onclick="sendAlert(document.getElementById('alert-custom-asset').value, document.getElementById('alert-custom-price').value, document.getElementById('alert-custom-dir').value)"
-        style="width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--black);border:none;padding:.65rem;font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;cursor:pointer;border-radius:2px;">
-        Activar Alerta →
-      </button>
-    </div>
-  </div>
-
-  <div style="margin-top:2rem;background:var(--card);border:1px solid var(--border);border-left:3px solid var(--gold);padding:1.2rem 1.5rem;border-radius:3px;">
-    <div style="font-size:.7rem;color:var(--gold);font-weight:700;margin-bottom:.4rem">ℹ️ Como funcionam os alertas?</div>
-    <div style="font-size:.72rem;color:var(--muted);line-height:1.8">Ao clicar em "Activar Alerta" abre o Telegram com uma mensagem pré-preenchida para o bot <strong style="color:var(--white)">@BragaFinanceAuth_bot</strong>. Envia a mensagem e o bot regista o teu alerta. Recebes uma notificação quando o preço atingir o valor definido.</div>
-  </div>
-</section>
-
-<script>
-  function sendAlert(asset, price, direction) {
-    if (!asset || !price) {
-      alert('Por favor preenche o activo e o preço alvo.');
-      return;
-    }
-    const dir = direction === 'acima' ? '📈 ACIMA de' : '📉 ABAIXO de';
-    const msg = encodeURIComponent(`🔔 ALERTA: ${asset.toUpperCase()} ${dir} $${price}`);
-    window.open(`https://t.me/BragaFinanceAuth_bot?start=alerta_${asset.toUpperCase()}_${direction}_${price}`, '_blank');
-  }
-</script>
-
-
-
 <!-- GLOSSÁRIO -->
 <section style="padding:5rem 4rem;border-bottom:1px solid var(--border);background:var(--dark);">
   <div class="section-tag">// Glossário</div>
@@ -3542,7 +3448,7 @@ renderGloss();
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">BragaFinance</div>
-  <div class="footer-copy">© 2026 Braga Finance · Conteúdo educativo, não constitui aconselhamento financeiro.<span style="opacity:.45"> · v-C</span></div>
+  <div class="footer-copy">© 2026 Braga Finance · Conteúdo educativo, não constitui aconselhamento financeiro.<span style="opacity:.45"> · v-D</span></div>
   <div class="footer-links">
     <a href="https://t.me/+dm0Hug3qgcAzODA0" target="_blank">Telegram</a>
     <a href="https://discord.gg/HsgbC7AES4" target="_blank">Discord</a>
